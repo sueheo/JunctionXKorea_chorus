@@ -8,12 +8,18 @@ export function TopRunBar({ run }: TopRunBarProps) {
   return (
     <header className="top-run-bar">
       <div className="brand-mark" aria-label="RareSuSi logo">
-        <span className="brand-icon">R</span>
+        <span className="brand-icon">
+          <span />
+        </span>
         <strong>RareSuSi</strong>
       </div>
       <button className="project-picker" type="button">
-        <span>프로젝트</span>
-        <strong>{run.projectName}</strong>
+        <span className="project-icon" aria-hidden="true">문제</span>
+        <span>
+          <small>프로젝트</small>
+          <strong>{run.projectName}</strong>
+        </span>
+        <b aria-hidden="true">⌄</b>
       </button>
       <div className="run-status">
         <span className="status-dot" />
@@ -31,8 +37,12 @@ export function TopRunBar({ run }: TopRunBarProps) {
         <span>경과 시간</span>
         <strong>{run.elapsed}</strong>
       </div>
-      <button className="control-button" type="button">Pause</button>
-      <button className="control-button danger" type="button">Stop</button>
+      <button className="control-button pause" type="button">
+        <span aria-hidden="true" /> Pause
+      </button>
+      <button className="control-button danger" type="button">
+        <span aria-hidden="true" /> Stop
+      </button>
     </header>
   );
 }

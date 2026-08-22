@@ -14,7 +14,7 @@ function App() {
     <main className="app-shell">
       <TopRunBar run={visualization.run} />
       <section className="workspace" aria-label="RareSuSi squad visualization">
-        <ActivityLogPanel logs={visualization.logs} />
+        <ActivityLogPanel agents={visualization.agents} logs={visualization.logs} />
         <section className="stage-column" aria-label="현재 협업 무대">
           <CollaborationStage agents={visualization.agents} />
           <StepProgress steps={visualization.steps} />

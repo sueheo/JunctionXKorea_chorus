@@ -14,9 +14,12 @@ export type VisualizationAgent = {
   role: AgentRole;
   description: string;
   status: AgentStatus;
+  statusLabel: string;
+  currentTask: string;
   tokenUsed: number;
   tokenLimit: number;
   color: string;
+  accentColor: string;
 };
 
 export type VisualizationLog = {
@@ -26,6 +29,7 @@ export type VisualizationLog = {
   agentName: string;
   message: string;
   status: AgentStatus;
+  icon: "music" | "sleep" | "check" | "issue";
 };
 
 export type VisualizationStep = {

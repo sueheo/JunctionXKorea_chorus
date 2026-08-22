@@ -7,10 +7,13 @@ type StepProgressProps = {
 export function StepProgress({ steps }: StepProgressProps) {
   return (
     <nav className="step-progress" aria-label="Squad progress">
-      {steps.map((step) => (
-        <span className={`step-pill ${step.state}`} key={step.id}>
-          <span />
-          {step.label}
+      {steps.map((step, index) => (
+        <span className={`step-group ${step.state}`} key={step.id}>
+          <span className="step-pill">
+            <span />
+            {step.label}
+          </span>
+          {index < steps.length - 1 ? <i aria-hidden="true" /> : null}
         </span>
       ))}
     </nav>
