@@ -5,8 +5,10 @@ import { CollaborationStage } from "./components/CollaborationStage";
 import { ReasonPanel } from "./components/ReasonPanel";
 import { StepProgress } from "./components/StepProgress";
 import { TopRunBar } from "./components/TopRunBar";
-import { mockReplay } from "./data/mockReplay";
+import { goSampleReplay } from "./data/goSampleReplay";
 import { createVisualizationState } from "./lib/squadEventAdapter";
+
+const activeReplay = goSampleReplay;
 
 function App() {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -14,12 +16,12 @@ function App() {
   const [isStopped, setIsStopped] = useState(false);
 
   useEffect(() => {
-    if (isPaused || isStopped || elapsedSeconds >= mockReplay.durationSeconds) {
+    if (isPaused || isStopped || elapsedSeconds >= activeReplay.durationSeconds) {
       return;
     }
 
     const timer = window.setInterval(() => {
-      setElapsedSeconds((current) => Math.min(current + 1, mockReplay.durationSeconds));
+      setElapsedSeconds((current) => Math.min(current + 1, activeReplay.durationSeconds));
     }, 1000);
 
     return () => window.clearInterval(timer);
@@ -27,7 +29,7 @@ function App() {
 
   const visualization = useMemo(
     () =>
-      createVisualizationState(mockReplay, {
+      createVisualizationState(activeReplay, {
         elapsedSeconds,
         isPaused,
         isStopped,

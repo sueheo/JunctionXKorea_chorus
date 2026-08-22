@@ -90,6 +90,12 @@ export type MockReplayEvent = {
   };
 };
 
+export type NormalizedReplayEvent = MockReplayEvent & {
+  source: "go-events-jsonl" | "go-history" | "go-log-jsonl";
+  rawEventType?: string;
+  rawId?: string | number;
+};
+
 export type VisualizationState = {
   run: RunSummary;
   agents: VisualizationAgent[];

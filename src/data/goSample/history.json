@@ -1,0 +1,78 @@
+[
+  {
+    "executionId": "5514f524-8fc1-4664-a207-2113c8e2a108",
+    "squadId": "e023315d-5293-4fa4-b37f-612ca3462ec0",
+    "squadName": "풀스택 개발 스쿼드",
+    "request": "너 뭐할줄알아",
+    "planTitle": "Plan for: 너 뭐할줄알아",
+    "tasks": [
+      {
+        "taskId": "2bd6b95c-d117-4ded-bb32-d1ca79293416",
+        "title": "Front-End Sample Code",
+        "agentId": "agent-1787377184655-93d2utv",
+        "agentName": "프론트엔드 개발자",
+        "status": "completed",
+        "error": null,
+        "durationMs": 13495,
+        "tokenUsage": { "promptTokens": 1921, "completionTokens": 1088, "total": 3009 }
+      },
+      {
+        "taskId": "7674a384-48b1-49e4-9f25-253499707e86",
+        "title": "Backend README",
+        "agentId": "agent-1787377184655-wxth7eq",
+        "agentName": "백엔드 개발자",
+        "status": "completed",
+        "error": null,
+        "durationMs": 17227,
+        "tokenUsage": { "promptTokens": 1456, "completionTokens": 1429, "total": 2885 }
+      },
+      {
+        "taskId": "84b135e9-95cf-4dd6-bb93-58153d514e67",
+        "title": "README Generation",
+        "agentId": "agent-1787377184655-93d2utv",
+        "agentName": "프론트엔드 개발자",
+        "status": "completed",
+        "error": null,
+        "durationMs": 13110,
+        "tokenUsage": { "promptTokens": 4310, "completionTokens": 2116, "total": 6426 }
+      },
+      {
+        "taskId": "b513f78f-97c5-4429-af75-5a76813fa728",
+        "title": "Back-End Sample API",
+        "agentId": "agent-1787377184655-wxth7eq",
+        "agentName": "백엔드 개발자",
+        "status": "completed",
+        "error": null,
+        "durationMs": 29460,
+        "tokenUsage": { "promptTokens": 3386, "completionTokens": 3778, "total": 7164 }
+      },
+      {
+        "taskId": "b5ca4583-91f3-47f3-8194-b0f3905880c2",
+        "title": "Code Review Task",
+        "agentId": "agent-1787377184655-ajwir6k",
+        "agentName": "코드 리뷰어",
+        "status": "completed",
+        "error": null,
+        "durationMs": 6058,
+        "tokenUsage": { "promptTokens": 1173, "completionTokens": 434, "total": 1607 }
+      },
+      {
+        "taskId": "dc47470b-67bf-4725-b99f-f87c58428192",
+        "title": "README Generation",
+        "agentId": "agent-1787377184655-93d2utv",
+        "agentName": "프론트엔드 개발자",
+        "status": "completed",
+        "error": null,
+        "durationMs": 6830,
+        "tokenUsage": { "promptTokens": 5871, "completionTokens": 2624, "total": 8495 }
+      }
+    ],
+    "finalResult": "**Execution complete** - 6 task(s) processed in 2 wave(s).",
+    "status": "completed",
+    "totalTokenUsage": { "promptTokens": 10430, "completionTokens": 6836, "total": 17266 },
+    "durationMs": 160491,
+    "artifacts": [],
+    "startedAt": "2026-08-22T05:49:23.368841Z",
+    "completedAt": "2026-08-22T05:52:03.860623Z"
+  }
+]
