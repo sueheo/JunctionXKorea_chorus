@@ -982,29 +982,6 @@ button {
   box-shadow: none;
 }
 
-.stage-agent.working .agent-blob,
-.stage-agent.working .agent-image {
-  animation: breathe 1.8s ease-in-out infinite;
-}
-
-.stage-agent.is-active .agent-blob,
-.stage-agent.is-active .agent-image {
-  outline: 5px solid rgba(31, 122, 255, 0.18);
-  outline-offset: 7px;
-  border-radius: 28px;
-}
-
-.stage-agent.is-active::after {
-  position: absolute;
-  top: -18px;
-  right: 19px;
-  color: #1f7aff;
-  font-size: 23px;
-  font-weight: 900;
-  content: "♪";
-  animation: floatNote 1.4s ease-in-out infinite;
-}
-
 .agent-prop {
   position: absolute;
   right: -6px;
