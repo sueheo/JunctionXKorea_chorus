@@ -1,4 +1,5 @@
 import type { VisualizationAgent } from "../types/visualization";
+import stageAsset from "../assets/stage.png";
 
 type CollaborationStageProps = {
   activeAgentId?: string;
@@ -17,6 +18,7 @@ export function CollaborationStage({ activeAgentId, agents, stageMessage }: Coll
         <p><span className="status-dot" /> {stageMessage}</p>
       </div>
       <div className="stage-area">
+        <img alt="" aria-hidden="true" className="stage-image" src={stageAsset} />
         <div className="stage-tier top-tier" aria-label="상단 단상">
           {agents.slice(0, 2).map((agent) => (
             <AgentCharacter agent={agent} isActive={agent.id === activeAgentId} key={agent.id} />
