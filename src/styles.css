@@ -770,21 +770,34 @@ button {
   padding: 0 6px 12px;
 }
 
-.stage-header p {
-  display: flex;
+.stage-status-pill {
+  display: inline-flex;
   align-items: center;
-  gap: 11px;
+  justify-self: center;
+  gap: 9px;
+  min-height: 42px;
+  margin: 0;
+  padding: 0 42px;
+  border-radius: 16px;
+  background: #e4f8ee;
+  color: #14472E;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 600;
   word-break: keep-all;
   overflow-wrap: normal;
 }
 
+.stage-status-pill span {
+  color: #14472E;
+  font-size: 18px;
+}
+
 .stage-area {
   position: relative;
-  overflow: hidden;
-  width: min(100%, 760px);
-  min-height: min(440px, calc(100vh - 178px));
+  overflow: visible;
+  container-type: inline-size;
+  width: min(100%, 780px);
+  aspect-ratio: 780 / 456;
   margin: 0 auto;
   isolation: isolate;
 }
@@ -792,91 +805,77 @@ button {
 .stage-image {
   position: absolute;
   right: 0;
-  bottom: 14px;
+  bottom: clamp(12px, 1.79cqw, 14px);
   left: 0;
   z-index: 0;
   display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 28px 32px rgba(94, 52, 24, 0.18));
   pointer-events: none;
 }
 
-.stage-tier {
+.stage-agent-layer {
   position: absolute;
   z-index: 1;
-  right: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  margin: 0 auto;
-}
-
-.top-tier {
-  top: 10px;
-  gap: 74px;
-  width: 62%;
-  min-height: 158px;
-  padding: 0 28px;
-}
-
-.bottom-tier {
-  top: 198px;
-  gap: 42px;
-  width: 92%;
-  min-height: 176px;
-  padding: 0 36px;
+  inset: 0;
+  pointer-events: none;
 }
 
 .stage-agent {
-  position: relative;
+  position: absolute;
   z-index: 1;
   display: grid;
   justify-items: center;
-  gap: 8px;
-  min-width: 102px;
-  --agent-image-height: 146px;
+  min-width: clamp(106px, 16.92cqw, 132px);
+  --agent-image-height: clamp(120px, 19.23cqw, 150px);
   border: 0;
   background: transparent;
   color: #ffffff;
-  font-weight: 900;
   cursor: pointer;
+  pointer-events: auto;
+  transform: translateX(-50%);
 }
 
 .stage-agent.orchestrator {
-  --agent-image-height: 136px;
+  top: clamp(-36px, -4.62cqw, -28px);
+  left: 29%;
 }
 
 .stage-agent.criteria {
-  --agent-image-height: 142px;
+  top: clamp(-36px, -4.62cqw, -28px);
+  left: 69%;
 }
 
 .stage-agent.coder {
-  --agent-image-height: 150px;
+  top: clamp(90px, 14.36cqw, 112px);
+  left: 14.5%;
 }
 
 .stage-agent.reviewer {
-  --agent-image-height: 154px;
+  top: clamp(79px, 12.56cqw, 98px);
+  left: 50%;
 }
 
 .stage-agent.judge {
-  --agent-image-height: 150px;
+  top: clamp(86px, 13.85cqw, 108px);
+  left: 84.5%;
 }
 
 .stage-agent strong {
-  color: #ffffff;
-  font-size: 14px;
-  text-shadow: 0 2px 6px rgba(73, 39, 18, 0.72);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .agent-image-wrap {
   position: relative;
   display: grid;
-  width: 146px;
+  width: clamp(120px, 19.23cqw, 150px);
   height: var(--agent-image-height);
   place-items: end center;
-  margin-bottom: -4px;
 }
 
 .agent-image {
@@ -885,7 +884,6 @@ button {
   height: 100%;
   max-width: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 15px 12px rgba(74, 42, 20, 0.18));
 }
 
 .agent-blob {
