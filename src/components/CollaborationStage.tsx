@@ -1,10 +1,12 @@
 import type { VisualizationAgent } from "../types/visualization";
 
 type CollaborationStageProps = {
+  activeAgentId?: string;
   agents: VisualizationAgent[];
+  stageMessage: string;
 };
 
-export function CollaborationStage({ agents }: CollaborationStageProps) {
+export function CollaborationStage({ activeAgentId, agents, stageMessage }: CollaborationStageProps) {
   return (
     <section className="collaboration-stage">
       <div className="stage-header">
@@ -12,17 +14,17 @@ export function CollaborationStage({ agents }: CollaborationStageProps) {
           <h1>현재 협업 무대</h1>
           <button className="info-button" type="button" aria-label="협업 무대 설명">i</button>
         </div>
-        <p><span className="status-dot" /> 코드 수정과 검증이 동시에 진행 중이에요</p>
+        <p><span className="status-dot" /> {stageMessage}</p>
       </div>
       <div className="stage-area">
         <div className="stage-tier top-tier" aria-label="상단 단상">
           {agents.slice(0, 2).map((agent) => (
-            <AgentCharacter agent={agent} key={agent.id} />
+            <AgentCharacter agent={agent} isActive={agent.id === activeAgentId} key={agent.id} />
           ))}
         </div>
         <div className="stage-tier bottom-tier" aria-label="하단 단상">
           {agents.slice(2).map((agent) => (
-            <AgentCharacter agent={agent} key={agent.id} />
+            <AgentCharacter agent={agent} isActive={agent.id === activeAgentId} key={agent.id} />
           ))}
         </div>
         <div className="conductor-placeholder">
@@ -34,9 +36,9 @@ export function CollaborationStage({ agents }: CollaborationStageProps) {
   );
 }
 
-function AgentCharacter({ agent }: { agent: VisualizationAgent }) {
+function AgentCharacter({ agent, isActive }: { agent: VisualizationAgent; isActive: boolean }) {
   return (
-    <button className={`stage-agent ${agent.status} ${agent.role}`} type="button">
+    <button className={`stage-agent ${agent.status} ${agent.role} ${isActive ? "is-active" : ""}`} type="button">
       <span className="agent-blob" style={{ backgroundColor: agent.color }}>
         <span className="agent-face">
           <span className="eye left" />

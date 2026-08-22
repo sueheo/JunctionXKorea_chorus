@@ -49,9 +49,17 @@ function App() {
         run={visualization.run}
       />
       <section className="workspace" aria-label="RareSuSi squad visualization">
-        <ActivityLogPanel agents={visualization.agents} logs={visualization.logs} />
+        <ActivityLogPanel
+          agents={visualization.agents}
+          latestLogId={visualization.latestLogId}
+          logs={visualization.logs}
+        />
         <section className="stage-column" aria-label="현재 협업 무대">
-          <CollaborationStage agents={visualization.agents} />
+          <CollaborationStage
+            activeAgentId={visualization.activeAgentId}
+            agents={visualization.agents}
+            stageMessage={visualization.stageMessage}
+          />
           <StepProgress steps={visualization.steps} />
           <ReasonPanel reason={visualization.reason} />
         </section>

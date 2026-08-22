@@ -41,6 +41,7 @@ export type VisualizationStep = {
 export type RunSummary = {
   projectName: string;
   statusLabel: string;
+  statusTone: "normal" | "attention" | "paused" | "stopped" | "complete";
   currentStep: number;
   totalSteps: number;
   elapsed: string;
@@ -92,6 +93,9 @@ export type VisualizationState = {
   run: RunSummary;
   agents: VisualizationAgent[];
   logs: VisualizationLog[];
+  latestLogId?: string;
+  activeAgentId?: string;
+  stageMessage: string;
   steps: VisualizationStep[];
   reason: {
     title: string;

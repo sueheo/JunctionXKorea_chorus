@@ -2,6 +2,7 @@ import type { VisualizationAgent, VisualizationLog } from "../types/visualizatio
 
 type ActivityLogPanelProps = {
   agents: VisualizationAgent[];
+  latestLogId?: string;
   logs: VisualizationLog[];
 };
 
@@ -12,7 +13,7 @@ const iconLabels = {
   issue: "문제 발생",
 };
 
-export function ActivityLogPanel({ agents, logs }: ActivityLogPanelProps) {
+export function ActivityLogPanel({ agents, latestLogId, logs }: ActivityLogPanelProps) {
   const groups = logs.reduce<Record<string, VisualizationLog[]>>((acc, log) => {
     acc[log.timeGroup] = [...(acc[log.timeGroup] ?? []), log];
     return acc;
@@ -39,7 +40,7 @@ export function ActivityLogPanel({ agents, logs }: ActivityLogPanelProps) {
               {timeGroup} ({groupLogs.length})
             </h3>
             {groupLogs.map((log) => (
-              <article className="log-item" key={log.id}>
+              <article className={`log-item ${log.id === latestLogId ? "is-latest" : ""}`} key={log.id}>
                 <span
                   className={`agent-avatar mini-character ${log.agentId}`}
                   style={{ backgroundColor: agentById[log.agentId]?.color }}

@@ -34,11 +34,19 @@ export function createVisualizationState(
   };
   let activeStepId = "find";
   let statusLabel = "Running normally";
+  let statusTone: VisualizationState["run"]["statusTone"] = "normal";
+  let activeAgentId: string | undefined;
+  let latestLogId: string | undefined;
+  let stageMessage = "팀이 문제를 살펴볼 준비를 하고 있어요";
 
   for (const event of activeEvents) {
     switch (event.type) {
       case "run_started":
         statusLabel = "Running normally";
+        statusTone = "normal";
+        if (event.message) {
+          stageMessage = event.message;
+        }
         break;
       case "step_changed":
         if (event.stepId) {
@@ -47,18 +55,32 @@ export function createVisualizationState(
         break;
       case "agent_status_changed":
         updateAgent(agents, event);
+        activeAgentId = event.agentId;
+        if (event.currentTask) {
+          stageMessage = event.currentTask;
+        }
         break;
       case "tokens_changed":
         updateAgentTokens(agents, event);
+        activeAgentId = event.agentId;
         break;
       case "log_added":
         appendLog(logs, agents, event, elapsedSeconds);
+        latestLogId = event.id;
+        activeAgentId = event.agentId;
+        if (event.message) {
+          stageMessage = event.message;
+        }
         break;
       case "issue_found":
         statusLabel = "Needs attention";
+        statusTone = "attention";
         issue.visible = true;
         issue.message = event.message ?? "검사에서 문제를 발견했어요";
         appendLog(logs, agents, event, elapsedSeconds);
+        latestLogId = event.id;
+        activeAgentId = event.agentId;
+        stageMessage = issue.message;
         if (event.reason) {
           reason.title = event.reason.title;
           reason.body = event.reason.body;
@@ -72,22 +94,32 @@ export function createVisualizationState(
         break;
       case "run_completed":
         statusLabel = "Replay complete";
+        statusTone = "complete";
+        if (event.message) {
+          stageMessage = event.message;
+        }
         break;
     }
   }
 
   if (isPaused) {
     statusLabel = "Paused";
+    statusTone = "paused";
   }
 
   if (isStopped) {
     statusLabel = "Stopped";
+    statusTone = "stopped";
+    issue.visible = true;
+    issue.message = "Replay가 중지됐어요";
+    stageMessage = "사용자가 replay를 멈췄어요";
   }
 
   return {
     run: {
       projectName: replay.projectName,
       statusLabel,
+      statusTone,
       currentStep: Math.max(1, stepOrder.indexOf(activeStepId) + 1),
       totalSteps: replay.totalSteps,
       elapsed: formatElapsed(elapsedSeconds),
@@ -96,6 +128,9 @@ export function createVisualizationState(
     },
     agents: isStopped ? stopAgents(agents) : agents,
     logs: logs.reverse(),
+    latestLogId,
+    activeAgentId,
+    stageMessage,
     steps: createSteps(activeStepId),
     reason,
     summary: createResourceSummary(agents),

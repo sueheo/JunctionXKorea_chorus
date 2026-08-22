@@ -154,6 +154,45 @@ button {
   font-size: 18px;
 }
 
+.run-status.attention {
+  border-color: #ffd2d2;
+  background: #fff5f5;
+  color: #ef1b1b;
+}
+
+.run-status.paused {
+  border-color: #d7e5ff;
+  background: #f3f7ff;
+  color: #1f62d0;
+}
+
+.run-status.stopped {
+  border-color: #e5e7eb;
+  background: #f5f6f8;
+  color: #667085;
+}
+
+.run-status.complete {
+  border-color: #d8eee0;
+  background: #effaf3;
+  color: #159947;
+}
+
+.run-status.attention .status-dot {
+  background: #ef1b1b;
+  box-shadow: 0 0 0 5px rgba(239, 27, 27, 0.1);
+}
+
+.run-status.paused .status-dot {
+  background: #1f62d0;
+  box-shadow: 0 0 0 5px rgba(31, 98, 208, 0.1);
+}
+
+.run-status.stopped .status-dot {
+  background: #98a2b3;
+  box-shadow: 0 0 0 5px rgba(152, 162, 179, 0.14);
+}
+
 .status-dot {
   display: inline-block;
   width: 15px;
@@ -348,8 +387,10 @@ button {
   border-bottom: 1px solid #eef1f5;
 }
 
-.log-group:first-child .log-item:first-of-type {
+.log-item.is-latest {
   background: #f8fbff;
+  box-shadow: inset 3px 0 0 #1f7aff;
+  animation: logPulse 900ms ease-out;
 }
 
 .log-item:last-child {
@@ -643,6 +684,22 @@ button {
   animation: breathe 1.8s ease-in-out infinite;
 }
 
+.stage-agent.is-active .agent-blob {
+  outline: 5px solid rgba(31, 122, 255, 0.18);
+  outline-offset: 7px;
+}
+
+.stage-agent.is-active::after {
+  position: absolute;
+  top: -18px;
+  right: 19px;
+  color: #1f7aff;
+  font-size: 28px;
+  font-weight: 900;
+  content: "♪";
+  animation: floatNote 1.4s ease-in-out infinite;
+}
+
 .agent-prop {
   position: absolute;
   right: -6px;
@@ -906,6 +963,7 @@ button {
   border-radius: 12px;
   background: #fff6f6;
   color: #ef1b1b;
+  animation: alertIn 240ms ease-out;
 }
 
 .issue-alert div {
@@ -933,5 +991,35 @@ button {
   }
   50% {
     transform: translateY(-8px);
+  }
+}
+
+@keyframes floatNote {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes logPulse {
+  from {
+    background: #eaf3ff;
+  }
+  to {
+    background: #f8fbff;
+  }
+}
+
+@keyframes alertIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

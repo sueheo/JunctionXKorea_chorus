@@ -23,7 +23,7 @@ export function TopRunBar({ onStop, onTogglePause, run }: TopRunBarProps) {
         </span>
         <b aria-hidden="true">⌄</b>
       </button>
-      <div className="run-status">
+      <div className={`run-status ${run.statusTone}`}>
         <span className="status-dot" />
         <strong>{run.statusLabel}</strong>
       </div>
