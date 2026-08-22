@@ -131,3 +131,13 @@ iOSInjectionProject/
 temp_auto_push.bat
 temp_interactive_push.bat
 branch_structure.json
+
+### Node / Vite ###
+node_modules/
+dist/
+.vite/
+.vite-temp/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

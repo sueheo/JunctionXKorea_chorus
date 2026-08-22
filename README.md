@@ -1,107 +1,36 @@
-# 🌱 프로젝트 이름
+# RareSuSi
 
-> 한 줄 설명 – 어떤 문제를 해결하거나 실험하려 했는지?
+RareSuSi는 AI Squad가 문제를 해결하는 과정을 비전공자도 이해할 수 있도록 보여주는 JunctionX Korea 인터랙티브 웹 프로젝트입니다.
 
-![프로젝트 배너 또는 스크린샷](링크)
+## Tech Stack
 
-[![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)]()
-[![Xcode](https://img.shields.io/badge/Xcode-15.0-blue.svg)]()
-[![License](https://img.shields.io/badge/license-MIT-green.svg)]()
+- Vite
+- React
+- TypeScript
 
----
-
-## 🗂 목차
-- [프로젝트 동기](#-프로젝트-동기)
-- [목표](#-목표)
-- [개발 환경](#-개발-환경)
-- [구현 기능](#-구현-기능)
-- [배운 점 / 트러블슈팅](#-배운-점--트러블슈팅)
-- [설치 및 실행](#-설치-및-실행)
-- [프로젝트 구조](#-프로젝트-구조)
-- [시연](#-테스트--시연)
-- [To-do](#-추후-개선-사항)
-- [작성자](#-작성자)
-- [라이선스](#-라이선스)
-
----
-
-## 💡 프로젝트 동기
-
-SwiftUI의 Combine을 학습하면서, 비동기 UI 상태 관리에 대한 이해를 높이기 위해 시작했습니다.
-
-
-## 📌 목표
-
-- 개인 학습 or 실험 프로젝트
-- 특정 기술 습득 (예: SwiftUI, Combine, Firebase 등)
-- 배운 것 정리 및 레퍼런스 확보
-
-
-## ⚙️ 개발 환경
-
-- Xcode 15.0 / iOS 17.0
-- Swift 5.9
-- SwiftUI + MVVM
-
-
-## 🧩 구현 기능
-
-- [x] 기능 1 설명
-- [x] 기능 2 설명
-- [ ] 기능 3 (To-do)
-
-> 필요 시 코드 스니펫, 이미지, 링크 추가
-
-
-## 📚 배운 점 / 트러블슈팅
-
-| 주제 | 요약 |
-|------|------|
-| SwiftData | SwiftData에서의 CRUD 구현 과정 |
-| NavigationStack | 복잡한 화면 전환 구조 |
-
-
-## ⚙️ 설치 및 실행
+## Getting Started
 
 ```bash
-git clone https://github.com/yourname/myproject.git
-open MyProject.xcodeproj
+npm install
+npm run dev
 ```
 
+## Project Structure
 
-## 🔍 프로젝트 구조
+```text
+src/
+  components/          화면 영역별 React 컴포넌트
+  data/                mock replay 데이터
+  lib/                 Squad event adapter
+  types/               시각화 상태 타입
+  App.tsx              앱 레이아웃 조립
+  main.tsx             React entry point
+  styles.css           전역 스타일
+docs/
+  frontend-plan.md     프론트엔드 구현 방향 문서
 ```
-📦ProjectName
-┣ 📂Feature
-┃ ┣ 📂SceneA
-┃ ┗ 📂SceneB
-┣ 📂Core
-┣ 📂UI
-┣ 📂Test
-┗ 📂Resources
-```
 
+## Current Scope
 
-## 🧪 테스트 / 시연
-
-- GIF나 시연 영상 링크 추가
-- 시나리오별 이미지/설명 삽입
-
-
-## 📝 추후 개선 사항
-
-- [ ] 다크모드 대응
-- [ ] 리팩토링 (네이밍 정리)
-- [ ] 테스트 코드 보완
-
-
-## 🙋🏻‍♀️ 작성자
-
-| 이름 | GitHub |
-|------|--------|
-| 나 | [@me](https://github.com/me) |
-
-
-## 📝 License
-
-This project is licensed under the ~~[CHOOSE A LICENSE](https://choosealicense.com). and update this line~~
+현재 단계는 Vite + React + TypeScript 스캐폴딩과 하이파이 초안 기반 화면 골격 구성입니다.
+실제 GO / AI:GO 연동은 mock replay와 adapter 구조가 안정화된 뒤 진행합니다.
