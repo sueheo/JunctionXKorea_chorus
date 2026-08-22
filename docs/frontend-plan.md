@@ -408,9 +408,9 @@ squad:execution-completed
 
 ---
 
-## 10. 기술 선택 제안
+## 10. 기술 스택 확정
 
-추천 기술 스택:
+확정 기술 스택:
 
 ```text
 Vite + React + TypeScript
@@ -443,7 +443,7 @@ Vite + React + TypeScript
 - 현재 문서 작성
 - MVP 범위 합의
 - 화면 구조 합의
-- 기술 스택 확정
+- 기술 스택을 `Vite + React + TypeScript`로 확정
 - 하이파이 초안 기준 컴포넌트 구조 반영
 
 ### Phase 2. 프로젝트 스캐폴딩
@@ -518,12 +518,11 @@ Vite + React + TypeScript
 
 이 문서를 기준으로 다음 결정을 내린다.
 
-1. 기술 스택을 `Vite + React + TypeScript`로 확정할지 결정
-2. 하이파이 초안의 5개 영역 구조를 MVP 기준으로 확정
-3. 캐릭터 에셋이 없을 때 사용할 placeholder 방식을 결정
-4. Figma Hi-Fi 또는 최신 화면 캡처가 있으면 Repository에 반영할 위치 결정
-5. 확정 후 프로젝트 스캐폴딩 시작
-6. mock replay 기반 첫 화면 구현
+1. 하이파이 초안의 5개 영역 구조를 MVP 기준으로 확정
+2. 캐릭터 에셋이 없을 때 사용할 placeholder 방식을 결정
+3. Figma Hi-Fi 또는 최신 화면 캡처가 있으면 Repository에 반영할 위치 결정
+4. `Vite + React + TypeScript` 프로젝트 스캐폴딩 시작
+5. mock replay 기반 첫 화면 구현
 
 ---
 
