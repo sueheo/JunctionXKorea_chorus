@@ -1,4 +1,9 @@
 import type { MockReplay } from "../types/visualization";
+import coderAsset from "../assets/agents/coder.png";
+import criteriaAsset from "../assets/agents/criteria.png";
+import judgeAsset from "../assets/agents/judge.png";
+import orchestratorAsset from "../assets/agents/orchestrator.png";
+import reviewerAsset from "../assets/agents/reviewer.png";
 
 export const mockReplay: MockReplay = {
   projectName: "쇼핑몰 결제 오류 수정",
@@ -17,6 +22,7 @@ export const mockReplay: MockReplay = {
       tokenLimit: 4000,
       color: "#ff7a1a",
       accentColor: "#f59e0b",
+      assetSrc: orchestratorAsset,
     },
     {
       id: "criteria",
@@ -30,6 +36,7 @@ export const mockReplay: MockReplay = {
       tokenLimit: 4000,
       color: "#f8bd25",
       accentColor: "#f59e0b",
+      assetSrc: criteriaAsset,
     },
     {
       id: "coder",
@@ -43,6 +50,7 @@ export const mockReplay: MockReplay = {
       tokenLimit: 4000,
       color: "#1e96ff",
       accentColor: "#1f7aff",
+      assetSrc: coderAsset,
     },
     {
       id: "reviewer",
@@ -56,6 +64,7 @@ export const mockReplay: MockReplay = {
       tokenLimit: 4000,
       color: "#e852d3",
       accentColor: "#9a47f5",
+      assetSrc: reviewerAsset,
     },
     {
       id: "judge",
@@ -69,6 +78,7 @@ export const mockReplay: MockReplay = {
       tokenLimit: 4000,
       color: "#2fc3a5",
       accentColor: "#20b59c",
+      assetSrc: judgeAsset,
     },
   ],
   events: [

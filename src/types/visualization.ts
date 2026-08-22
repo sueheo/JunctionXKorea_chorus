@@ -20,6 +20,7 @@ export type VisualizationAgent = {
   tokenLimit: number;
   color: string;
   accentColor: string;
+  assetSrc?: string;
 };
 
 export type VisualizationLog = {

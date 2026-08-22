@@ -27,10 +27,6 @@ export function CollaborationStage({ activeAgentId, agents, stageMessage }: Coll
             <AgentCharacter agent={agent} isActive={agent.id === activeAgentId} key={agent.id} />
           ))}
         </div>
-        <div className="conductor-placeholder">
-          <span className="conductor-head" />
-          <strong>지휘자</strong>
-        </div>
       </div>
     </section>
   );
@@ -39,14 +35,20 @@ export function CollaborationStage({ activeAgentId, agents, stageMessage }: Coll
 function AgentCharacter({ agent, isActive }: { agent: VisualizationAgent; isActive: boolean }) {
   return (
     <button className={`stage-agent ${agent.status} ${agent.role} ${isActive ? "is-active" : ""}`} type="button">
-      <span className="agent-blob" style={{ backgroundColor: agent.color }}>
-        <span className="agent-face">
-          <span className="eye left" />
-          <span className="eye right" />
-          <span className="mouth" />
+      {agent.assetSrc ? (
+        <span className="agent-image-wrap">
+          <img alt={`${agent.name} 캐릭터`} className="agent-image" src={agent.assetSrc} />
         </span>
-        <span className="agent-prop" aria-hidden="true" />
-      </span>
+      ) : (
+        <span className="agent-blob" style={{ backgroundColor: agent.color }}>
+          <span className="agent-face">
+            <span className="eye left" />
+            <span className="eye right" />
+            <span className="mouth" />
+          </span>
+          <span className="agent-prop" aria-hidden="true" />
+        </span>
+      )}
       <strong>{agent.name}</strong>
     </button>
   );

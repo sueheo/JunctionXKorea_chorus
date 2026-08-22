@@ -411,9 +411,7 @@ button {
 }
 
 .agent-avatar,
-.agent-blob,
-.conductor-placeholder,
-.conductor-head {
+.agent-blob {
   display: grid;
   place-items: center;
   border-radius: 999px;
@@ -525,8 +523,8 @@ button {
 
 .stage-area {
   position: relative;
-  min-height: 610px;
-  padding-top: 82px;
+  min-height: 530px;
+  padding-top: 74px;
 }
 
 .stage-tier {
@@ -552,15 +550,15 @@ button {
 
 .top-tier {
   width: min(660px, 74%);
-  min-height: 166px;
-  padding: 22px 48px 26px;
+  min-height: 218px;
+  padding: 18px 48px 22px;
   border-radius: 0 0 3px 3px;
 }
 
 .bottom-tier {
   width: min(900px, 96%);
-  min-height: 224px;
-  padding: 34px 52px 28px;
+  min-height: 258px;
+  padding: 24px 52px 26px;
   border-radius: 0 0 16px 16px;
 }
 
@@ -571,6 +569,7 @@ button {
   justify-items: center;
   gap: 10px;
   min-width: 136px;
+  --agent-image-height: 188px;
   border: 0;
   background: transparent;
   color: #ffffff;
@@ -578,10 +577,48 @@ button {
   cursor: pointer;
 }
 
+.stage-agent.orchestrator {
+  --agent-image-height: 176px;
+}
+
+.stage-agent.criteria {
+  --agent-image-height: 184px;
+}
+
+.stage-agent.coder {
+  --agent-image-height: 194px;
+}
+
+.stage-agent.reviewer {
+  --agent-image-height: 198px;
+}
+
+.stage-agent.judge {
+  --agent-image-height: 194px;
+}
+
 .stage-agent strong {
   color: #ffffff;
   font-size: 17px;
   text-shadow: 0 1px 4px rgba(73, 39, 18, 0.4);
+}
+
+.agent-image-wrap {
+  position: relative;
+  display: grid;
+  width: 190px;
+  height: var(--agent-image-height);
+  place-items: end center;
+  margin-bottom: -4px;
+}
+
+.agent-image {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 12px rgba(74, 42, 20, 0.18));
 }
 
 .agent-blob {
@@ -680,13 +717,16 @@ button {
   box-shadow: none;
 }
 
-.stage-agent.working .agent-blob {
+.stage-agent.working .agent-blob,
+.stage-agent.working .agent-image {
   animation: breathe 1.8s ease-in-out infinite;
 }
 
-.stage-agent.is-active .agent-blob {
+.stage-agent.is-active .agent-blob,
+.stage-agent.is-active .agent-image {
   outline: 5px solid rgba(31, 122, 255, 0.18);
   outline-offset: 7px;
+  border-radius: 28px;
 }
 
 .stage-agent.is-active::after {
@@ -755,26 +795,6 @@ button {
   border-radius: 7px;
   background: #9a5a2e;
   rotate: -25deg;
-}
-
-.conductor-placeholder {
-  position: absolute;
-  bottom: 18px;
-  left: calc(50% - 430px);
-  display: grid;
-  justify-items: center;
-  gap: 8px;
-  width: 146px;
-  color: #4b3424;
-  font-weight: 900;
-}
-
-.conductor-head {
-  width: 128px;
-  height: 144px;
-  border-radius: 47% 47% 42% 42%;
-  background: #fff0d5;
-  box-shadow: inset 0 -11px 0 rgba(0, 0, 0, 0.08), 0 16px 22px rgba(0, 0, 0, 0.13);
 }
 
 .step-progress {
