@@ -12,6 +12,7 @@ const activeReplay = goSampleReplay;
 
 function App() {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [isActivityPanelOpen, setIsActivityPanelOpen] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [isStopped, setIsStopped] = useState(false);
 
@@ -50,11 +51,26 @@ function App() {
         onTogglePause={() => setIsPaused((current) => !current)}
         run={visualization.run}
       />
-      <section className="workspace" aria-label="RareSuSi squad visualization">
+      <section
+        className={`workspace ${isActivityPanelOpen ? "activity-open" : "activity-collapsed"}`}
+        aria-label="RareSuSi squad visualization"
+      >
+        <button
+          className="activity-drawer-opener"
+          onClick={() => setIsActivityPanelOpen(true)}
+          type="button"
+          aria-expanded={isActivityPanelOpen}
+          aria-label="활동 로그 열기"
+        >
+          <span />
+          <span />
+        </button>
         <ActivityLogPanel
           agents={visualization.agents}
+          isOpen={isActivityPanelOpen}
           latestLogId={visualization.latestLogId}
           logs={visualization.logs}
+          onToggle={() => setIsActivityPanelOpen((current) => !current)}
         />
         <section className="stage-column" aria-label="현재 협업 무대">
           <CollaborationStage
