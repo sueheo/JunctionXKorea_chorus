@@ -60,8 +60,8 @@ function App() {
           aria-expanded={isActivityPanelOpen}
           aria-label="활동 로그 열기"
         >
-          <span />
-          <span />
+          <span className="drawer-toggle-icon" />
+          <span>활동 로그 보기</span>
         </button>
         <ActivityLogPanel
           agents={visualization.agents}

@@ -41,8 +41,7 @@ export function ActivityLogPanel({ agents, isOpen, latestLogId, logs, onToggle }
           aria-expanded={isOpen}
           aria-label={isOpen ? "활동 로그 닫기" : "활동 로그 열기"}
         >
-          <span />
-          <span />
+          <span className="drawer-toggle-icon" />
         </button>
       </div>
       <div className="activity-filter-row" aria-label="로그 필터">
@@ -73,7 +72,6 @@ export function ActivityLogPanel({ agents, isOpen, latestLogId, logs, onToggle }
         ))}
         {filteredLogs.length === 0 ? <p className="activity-empty">표시할 로그가 없어요</p> : null}
       </div>
-      <p className="activity-panel-hint">로그를 선택하면 상세 근거를 볼 수 있어요</p>
     </aside>
   );
 }
