@@ -2,8 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { ActivityLogPanel } from "./components/ActivityLogPanel";
 import { AgentResourcePanel } from "./components/AgentResourcePanel";
 import { CollaborationStage } from "./components/CollaborationStage";
-import { ReasonPanel } from "./components/ReasonPanel";
-import { StepProgress } from "./components/StepProgress";
 import { TopRunBar } from "./components/TopRunBar";
 import { goSampleReplay } from "./data/goSampleReplay";
 import { createVisualizationState } from "./lib/squadEventAdapter";
@@ -78,8 +76,6 @@ function App() {
             agents={visualization.agents}
             stageMessage={visualization.stageMessage}
           />
-          <StepProgress steps={visualization.steps} />
-          <ReasonPanel reason={visualization.reason} />
         </section>
         <AgentResourcePanel
           agents={visualization.agents}
