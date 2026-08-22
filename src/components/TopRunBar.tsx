@@ -1,10 +1,12 @@
 import type { RunSummary } from "../types/visualization";
 
 type TopRunBarProps = {
+  onStop: () => void;
+  onTogglePause: () => void;
   run: RunSummary;
 };
 
-export function TopRunBar({ run }: TopRunBarProps) {
+export function TopRunBar({ onStop, onTogglePause, run }: TopRunBarProps) {
   return (
     <header className="top-run-bar">
       <div className="brand-mark" aria-label="RareSuSi logo">
@@ -37,10 +39,15 @@ export function TopRunBar({ run }: TopRunBarProps) {
         <span>경과 시간</span>
         <strong>{run.elapsed}</strong>
       </div>
-      <button className="control-button pause" type="button">
-        <span aria-hidden="true" /> Pause
+      <button
+        className="control-button pause"
+        disabled={run.isStopped}
+        onClick={onTogglePause}
+        type="button"
+      >
+        <span aria-hidden="true" /> {run.isPaused ? "Resume" : "Pause"}
       </button>
-      <button className="control-button danger" type="button">
+      <button className="control-button danger" disabled={run.isStopped} onClick={onStop} type="button">
         <span aria-hidden="true" /> Stop
       </button>
     </header>

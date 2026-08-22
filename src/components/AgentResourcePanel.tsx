@@ -1,7 +1,9 @@
-import type { ResourceSummary, VisualizationAgent } from "../types/visualization";
+import type { ResourceSummary, VisualizationAgent, VisualizationState } from "../types/visualization";
 
 type AgentResourcePanelProps = {
   agents: VisualizationAgent[];
+  issue: VisualizationState["issue"];
+  onRetry: () => void;
   summary: ResourceSummary;
 };
 
@@ -13,7 +15,7 @@ const statusTone = {
   error: "error",
 };
 
-export function AgentResourcePanel({ agents, summary }: AgentResourcePanelProps) {
+export function AgentResourcePanel({ agents, issue, onRetry, summary }: AgentResourcePanelProps) {
   return (
     <aside className="resource-panel" aria-label="에이전트와 자원">
       <div className="panel-heading">
@@ -64,13 +66,15 @@ export function AgentResourcePanel({ agents, summary }: AgentResourcePanelProps)
         <span><i className="legend-done" /> 완료</span>
         <span><i className="legend-error" /> 문제 발생</span>
       </section>
-      <section className="issue-alert">
-        <strong>검사에서 문제 1개 발견</strong>
-        <div>
-          <button type="button">자세히 보기</button>
-          <button type="button">다시 시도</button>
-        </div>
-      </section>
+      {issue.visible ? (
+        <section className="issue-alert">
+          <strong>{issue.message}</strong>
+          <div>
+            <button type="button">자세히 보기</button>
+            <button onClick={onRetry} type="button">다시 시도</button>
+          </div>
+        </section>
+      ) : null}
     </aside>
   );
 }

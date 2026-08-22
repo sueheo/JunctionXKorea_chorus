@@ -44,6 +44,8 @@ export type RunSummary = {
   currentStep: number;
   totalSteps: number;
   elapsed: string;
+  isPaused: boolean;
+  isStopped: boolean;
 };
 
 export type ResourceSummary = {
@@ -53,6 +55,40 @@ export type ResourceSummary = {
 };
 
 export type MockReplay = {
+  projectName: string;
+  totalSteps: number;
+  durationSeconds: number;
+  baseAgents: VisualizationAgent[];
+  events: MockReplayEvent[];
+};
+
+export type MockReplayEvent = {
+  id: string;
+  at: number;
+  type:
+    | "run_started"
+    | "step_changed"
+    | "agent_status_changed"
+    | "log_added"
+    | "tokens_changed"
+    | "reason_changed"
+    | "issue_found"
+    | "run_completed";
+  agentId?: string;
+  status?: AgentStatus;
+  statusLabel?: string;
+  currentTask?: string;
+  stepId?: string;
+  message?: string;
+  icon?: VisualizationLog["icon"];
+  tokenUsed?: number;
+  reason?: {
+    title: string;
+    body: string;
+  };
+};
+
+export type VisualizationState = {
   run: RunSummary;
   agents: VisualizationAgent[];
   logs: VisualizationLog[];
@@ -62,6 +98,8 @@ export type MockReplay = {
     body: string;
   };
   summary: ResourceSummary;
+  issue: {
+    visible: boolean;
+    message: string;
+  };
 };
-
-export type VisualizationState = MockReplay;
