@@ -11,6 +11,7 @@ const activeReplay = goSampleReplay;
 function App() {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isActivityPanelOpen, setIsActivityPanelOpen] = useState(true);
+  const [isResourcePanelOpen, setIsResourcePanelOpen] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [isStopped, setIsStopped] = useState(false);
 
@@ -50,7 +51,9 @@ function App() {
         run={visualization.run}
       />
       <section
-        className={`workspace ${isActivityPanelOpen ? "activity-open" : "activity-collapsed"}`}
+        className={`workspace ${isActivityPanelOpen ? "activity-open" : "activity-collapsed"} ${
+          isResourcePanelOpen ? "resource-open" : "resource-collapsed"
+        }`}
         aria-label="RareSuSi squad visualization"
       >
         <button
@@ -70,6 +73,16 @@ function App() {
           logs={visualization.logs}
           onToggle={() => setIsActivityPanelOpen((current) => !current)}
         />
+        <button
+          className="resource-drawer-opener"
+          onClick={() => setIsResourcePanelOpen(true)}
+          type="button"
+          aria-expanded={isResourcePanelOpen}
+          aria-label="에이전트와 자원 열기"
+        >
+          <span className="drawer-toggle-icon" />
+          <span>에이전트 보기</span>
+        </button>
         <section className="stage-column" aria-label="현재 협업 무대">
           <CollaborationStage
             activeAgentId={visualization.activeAgentId}
@@ -80,6 +93,8 @@ function App() {
         <AgentResourcePanel
           agents={visualization.agents}
           issue={visualization.issue}
+          isOpen={isResourcePanelOpen}
+          onToggle={() => setIsResourcePanelOpen((current) => !current)}
           onRetry={handleRetry}
           summary={visualization.summary}
         />
