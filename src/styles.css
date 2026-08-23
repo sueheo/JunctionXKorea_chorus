@@ -963,6 +963,11 @@ button {
   object-fit: contain;
 }
 
+.agent-animation {
+  background: transparent;
+  pointer-events: none;
+}
+
 .agent-blob {
   position: relative;
   width: 124px;

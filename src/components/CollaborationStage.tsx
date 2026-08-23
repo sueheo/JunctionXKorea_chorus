@@ -1,5 +1,6 @@
 import type { VisualizationAgent } from "../types/visualization";
 import stageAsset from "../assets/stage.png";
+import { getAgentAnimationSrc } from "../lib/agentAnimations";
 
 type CollaborationStageProps = {
   activeAgentId?: string;
@@ -29,9 +30,25 @@ export function CollaborationStage({ activeAgentId, agents, stageMessage }: Coll
 }
 
 function AgentCharacter({ agent, isActive }: { agent: VisualizationAgent; isActive: boolean }) {
+  const animationSrc = getAgentAnimationSrc(agent.role, agent.status);
+
   return (
     <button className={`stage-agent ${agent.status} ${agent.role} ${isActive ? "is-active" : ""}`} type="button">
-      {agent.assetSrc ? (
+      {animationSrc ? (
+        <span className="agent-image-wrap">
+          <video
+            aria-label={`${agent.name} ${agent.statusLabel} 애니메이션`}
+            autoPlay
+            className="agent-image agent-animation"
+            key={animationSrc}
+            loop
+            muted
+            playsInline
+            preload="auto"
+            src={animationSrc}
+          />
+        </span>
+      ) : agent.assetSrc ? (
         <span className="agent-image-wrap">
           <img alt={`${agent.name} 캐릭터`} className="agent-image" src={agent.assetSrc} />
         </span>
