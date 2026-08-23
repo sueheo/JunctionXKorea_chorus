@@ -545,7 +545,7 @@ button {
 
 .activity-filter-row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
   justify-items: center;
   gap: 0;
@@ -586,6 +586,105 @@ button {
 .activity-log-list::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+
+.raw-trace-view {
+  display: grid;
+  min-height: 0;
+  margin-top: 18px;
+}
+
+.raw-trace-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.raw-trace-toolbar label {
+  display: block;
+  min-width: 0;
+}
+
+.raw-trace-toolbar label span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.raw-trace-toolbar select {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 34px 0 12px;
+  border: 1px solid #d9dde4;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.raw-trace-toolbar strong {
+  color: #667085;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.raw-trace-list {
+  display: grid;
+  align-content: start;
+  gap: 13px;
+  min-height: 0;
+  margin-top: 18px;
+  overflow-y: auto;
+  padding-right: 2px;
+  scrollbar-width: none;
+}
+
+.raw-trace-list::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.raw-trace-row {
+  display: grid;
+  grid-template-columns: 48px 88px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  color: #111827;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.raw-trace-level {
+  color: #0076c9;
+  font-weight: 800;
+}
+
+.raw-trace-level.error {
+  color: #d9122a;
+}
+
+.raw-trace-source {
+  overflow: hidden;
+  color: #666666;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.raw-trace-row code {
+  min-width: 0;
+  color: #111827;
+  font: inherit;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .activity-log-item {
@@ -648,6 +747,16 @@ button {
   font-size: 13px;
   font-weight: 400;
   line-height: 1.35;
+}
+
+.activity-log-copy small {
+  color: #98a2b3;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .activity-log-item time {
