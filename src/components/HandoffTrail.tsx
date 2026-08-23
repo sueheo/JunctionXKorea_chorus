@@ -23,7 +23,7 @@ export function HandoffTrail({ agents, nodes }: HandoffTrailProps) {
 
         return (
           <span className="handoff-trail-group" key={node.id}>
-            <span className={`handoff-agent ${node.state}`} title={node.label}>
+            <span className={`handoff-agent ${node.state} ${node.slot}`} title={node.label}>
               {agent.assetSrc ? (
                 <img alt={`${agent.name} 에이전트`} src={agent.assetSrc} />
               ) : (

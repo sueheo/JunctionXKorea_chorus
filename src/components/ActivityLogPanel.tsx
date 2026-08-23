@@ -78,12 +78,12 @@ export function ActivityLogPanel({ agents, isOpen, latestLogId, logs, onToggle }
 }
 
 function resolveLogColor(log: VisualizationLog, agent?: VisualizationAgent) {
-  if (agent?.accentColor) {
-    return agent.accentColor;
-  }
-
   if (log.icon === "issue" || log.status === "error") {
     return "#ef4444";
+  }
+
+  if (agent?.accentColor) {
+    return agent.accentColor;
   }
 
   if (log.icon === "check" || log.status === "completed") {

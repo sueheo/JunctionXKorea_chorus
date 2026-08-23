@@ -15,6 +15,7 @@ function App() {
   const [isResourcePanelOpen, setIsResourcePanelOpen] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [isStopped, setIsStopped] = useState(false);
+  const [isErrorTest, setIsErrorTest] = useState(false);
 
   useEffect(() => {
     if (isPaused || isStopped || elapsedSeconds >= activeReplay.durationSeconds) {
@@ -32,15 +33,23 @@ function App() {
     () =>
       createVisualizationState(activeReplay, {
         elapsedSeconds,
+        isErrorTest,
         isPaused,
         isStopped,
       }),
-    [elapsedSeconds, isPaused, isStopped],
+    [elapsedSeconds, isErrorTest, isPaused, isStopped],
   );
 
   const handleRetry = () => {
     setElapsedSeconds(0);
+    setIsErrorTest(false);
     setIsPaused(false);
+    setIsStopped(false);
+  };
+
+  const handleTestError = () => {
+    setIsErrorTest(true);
+    setIsPaused(true);
     setIsStopped(false);
   };
 
@@ -98,6 +107,7 @@ function App() {
           isOpen={isResourcePanelOpen}
           onToggle={() => setIsResourcePanelOpen((current) => !current)}
           onRetry={handleRetry}
+          onTestError={handleTestError}
           summary={visualization.summary}
         />
       </section>

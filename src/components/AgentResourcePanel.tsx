@@ -12,6 +12,7 @@ type AgentResourcePanelProps = {
   issue: VisualizationState["issue"];
   onToggle: () => void;
   onRetry: () => void;
+  onTestError: () => void;
   summary: ResourceSummary;
 };
 
@@ -31,7 +32,15 @@ const resourcePortraits: Partial<Record<VisualizationAgent["role"], string>> = {
   reviewer: reviewerPortrait,
 };
 
-export function AgentResourcePanel({ agents, isOpen, issue, onRetry, onToggle, summary }: AgentResourcePanelProps) {
+export function AgentResourcePanel({
+  agents,
+  isOpen,
+  issue,
+  onRetry,
+  onTestError,
+  onToggle,
+  summary,
+}: AgentResourcePanelProps) {
   return (
     <aside className="resource-panel" aria-label="에이전트와 자원">
       <div className="panel-heading">
@@ -109,6 +118,9 @@ export function AgentResourcePanel({ agents, isOpen, issue, onRetry, onToggle, s
         <span><i className="legend-done" /> 완료</span>
         <span><i className="legend-error" /> 문제 발생</span>
       </section>
+      <button className="error-test-button" onClick={onTestError} type="button">
+        에러 테스트
+      </button>
       {issue.visible ? (
         <section className="issue-alert">
           <strong>{issue.message}</strong>

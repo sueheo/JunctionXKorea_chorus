@@ -11,16 +11,18 @@ import { getAgentTokenUsage } from "./tokenModels";
 
 type ReplayOptions = {
   elapsedSeconds: number;
+  isErrorTest: boolean;
   isPaused: boolean;
   isStopped: boolean;
 };
 
 const stepOrder = ["find", "fix", "verify"];
-const maxHandoffTrailNodes = 3;
+const maxHandoffTrailNodes = 5;
+const handoffSlots: HandoffTrailNode["slot"][] = ["edge-left", "near-left", "center", "near-right", "edge-right"];
 
 export function createVisualizationState(
   replay: MockReplay,
-  { elapsedSeconds, isPaused, isStopped }: ReplayOptions,
+  { elapsedSeconds, isErrorTest, isPaused, isStopped }: ReplayOptions,
 ): VisualizationState {
   const activeEvents = replay.events
     .filter((event) => event.at <= elapsedSeconds)
@@ -108,6 +110,33 @@ export function createVisualizationState(
   if (isPaused) {
     statusLabel = "Paused";
     statusTone = "paused";
+  }
+
+  if (isErrorTest) {
+    const reviewer = agents.find((agent) => agent.id === "reviewer");
+
+    if (reviewer) {
+      reviewer.status = "error";
+      reviewer.statusLabel = "에러";
+      reviewer.currentTask = "에러 테스트에서 실패 상태를 확인하고 있어요";
+    }
+
+    statusLabel = "Needs attention";
+    statusTone = "attention";
+    issue.visible = true;
+    issue.message = "에러 테스트: 검사자 단계에서 실패를 확인했어요";
+    activeAgentId = "reviewer";
+    latestLogId = "error-test-log";
+    stageMessage = "에러 테스트가 실행됐어요";
+    logs.push({
+      id: "error-test-log",
+      timeGroup: "지금 막",
+      agentId: "reviewer",
+      agentName: reviewer?.name ?? "검사자",
+      message: "테스트용 에러가 발생했어요",
+      status: "error",
+      icon: "issue",
+    });
   }
 
   if (isStopped) {
@@ -219,11 +248,14 @@ function createHandoffTrail(
             id: `${firstAgent.id}-initial`,
             agentId: firstAgent.id,
             label: firstAgent.name,
+            slot: "center",
             state: "active",
           },
         ]
       : [];
   }
+
+  const slots = getVisibleHandoffSlots(visibleAgentIds.length);
 
   return visibleAgentIds.map((agentId, index) => {
     const agent = agents.find((item) => item.id === agentId);
@@ -233,9 +265,15 @@ function createHandoffTrail(
       id: `${agentId}-${orderedAgentIds.length - visibleAgentIds.length + index}`,
       agentId,
       label: agent?.name ?? "에이전트",
+      slot: slots[index],
       state: isComplete || !isLast ? "done" : "active",
     };
   });
+}
+
+function getVisibleHandoffSlots(count: number) {
+  const startIndex = Math.max(0, Math.floor((handoffSlots.length - count) / 2));
+  return handoffSlots.slice(startIndex, startIndex + count);
 }
 
 function isHandoffTrailEvent(event: MockReplayEvent) {

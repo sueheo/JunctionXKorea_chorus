@@ -46,6 +46,7 @@ export type HandoffTrailNode = {
   id: string;
   agentId: string;
   label: string;
+  slot: "edge-left" | "near-left" | "center" | "near-right" | "edge-right";
   state: "done" | "active" | "upcoming";
 };
 

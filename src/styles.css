@@ -1133,34 +1133,35 @@ button {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  width: min(100%, 640px);
-  min-height: 74px;
+  gap: 12px;
+  width: min(100%, 780px);
+  min-height: 86px;
   margin: 8px auto 16px;
-  padding: 6px 12px;
+  padding: 8px 16px;
   overflow: hidden;
 }
 
 .handoff-trail-group {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex: 0 0 auto;
-  animation: handoff-node-enter 220ms ease both;
+  animation: handoff-node-enter 260ms ease both;
 }
 
 .handoff-agent {
   display: grid;
   justify-items: center;
   gap: 4px;
-  min-width: 58px;
+  min-width: 62px;
   color: #667085;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.1;
   text-align: center;
   transition:
     color 180ms ease,
+    filter 180ms ease,
     opacity 180ms ease,
     transform 180ms ease;
 }
@@ -1168,8 +1169,8 @@ button {
 .handoff-agent img,
 .handoff-agent .agent-avatar {
   display: block;
-  width: 50px;
-  height: 50px;
+  width: 54px;
+  height: 54px;
   object-fit: contain;
   transition:
     filter 180ms ease,
@@ -1188,15 +1189,41 @@ button {
   color: #179f55;
 }
 
+.handoff-agent.edge-left,
+.handoff-agent.edge-right {
+  opacity: 0.28;
+  filter: blur(0.25px);
+  transform: scale(0.82);
+}
+
+.handoff-agent.near-left,
+.handoff-agent.near-right {
+  opacity: 0.9;
+  transform: scale(0.94);
+}
+
+.handoff-agent.center {
+  opacity: 1;
+  transform: scale(1.04);
+}
+
 .handoff-agent.active {
   color: #0f7a3d;
-  transform: translateY(-3px);
+  opacity: 1;
+  filter: none;
+  transform: translateY(-3px) scale(1.08);
 }
 
 .handoff-agent.active img,
 .handoff-agent.active .agent-avatar {
   filter: drop-shadow(0 0 14px rgba(74, 222, 128, 0.75));
-  transform: scale(1.12);
+  transform: scale(1.08);
+}
+
+.handoff-agent.active.edge-left,
+.handoff-agent.active.edge-right {
+  opacity: 0.62;
+  transform: translateY(-2px) scale(0.9);
 }
 
 .handoff-agent.upcoming {
@@ -1206,24 +1233,24 @@ button {
 .handoff-connector {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   color: #d1d5db;
 }
 
 .handoff-connector i {
   display: block;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 999px;
   background: currentColor;
 }
 
 .handoff-connector b {
   display: block;
-  width: 16px;
-  height: 16px;
-  border-top: 6px solid currentColor;
-  border-right: 6px solid currentColor;
+  width: 15px;
+  height: 15px;
+  border-top: 5px solid currentColor;
+  border-right: 5px solid currentColor;
   transform: rotate(45deg);
 }
 
@@ -1239,7 +1266,7 @@ button {
 @keyframes handoff-node-enter {
   from {
     opacity: 0;
-    transform: translateX(18px);
+    transform: translateX(28px);
   }
 
   to {
@@ -1339,7 +1366,7 @@ button {
 .agent-resource-card strong {
   color: #000000;
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.2;
 }
 
@@ -1440,9 +1467,9 @@ button {
 .resource-summary {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
+  gap: 22px;
   margin-top: 18px;
-  padding: 18px 20px;
+  padding: 18px 22px;
   border: 0;
   border-radius: 18px;
   background: #ffffff;
@@ -1451,42 +1478,45 @@ button {
 
 .resource-summary div {
   display: grid;
+  min-width: 0;
   gap: 7px;
+  justify-items: start;
 }
 
 .resource-summary div + div {
-  padding-left: 24px;
+  padding-left: 22px;
   border-left: 1px solid #d7dce5;
 }
 
 .resource-summary span {
   color: #4b5563;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .resource-summary strong {
   color: #111827;
-  font-size: 25px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 700;
   line-height: 1.1;
 }
 
 .resource-summary small {
   color: #a3a5aa;
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .resource-summary .summary-limit {
   color: #b1b4bb;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .summary-progress {
   display: block;
-  width: min(100%, 150px);
+  width: min(100%, 144px);
+  max-width: 144px;
   height: 10px;
   margin-top: 5px;
   border-radius: 999px;
@@ -1514,6 +1544,24 @@ button {
   font-size: 12px;
   font-weight: 700;
   box-shadow: 0 2px 12px rgba(16, 24, 40, 0.04);
+}
+
+.error-test-button {
+  width: 100%;
+  min-height: 40px;
+  margin-top: 10px;
+  border: 1px solid #ffd6d6;
+  border-radius: 12px;
+  background: #fff7f7;
+  color: #d92d20;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.error-test-button:hover,
+.error-test-button:focus-visible {
+  background: #ffefef;
 }
 
 .status-legend span {
@@ -1567,31 +1615,44 @@ button {
 }
 
 .issue-alert {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   margin-top: 18px;
-  padding: 15px 17px;
+  padding: 14px 16px;
   border: 0;
   border-radius: 16px;
   background: #fff6f6;
   color: #e4262f;
 }
 
+.issue-alert strong {
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  word-break: keep-all;
+}
+
 .issue-alert div {
-  display: flex;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 82px);
+  flex: 0 0 auto;
+  gap: 8px;
 }
 
 .issue-alert button {
+  width: 82px;
   min-height: 38px;
-  padding: 0 15px;
+  padding: 0 10px;
   border: 0;
   border-radius: 12px;
   color: #e4262f;
   font-size: 13px;
   font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .issue-alert button:last-child {
