@@ -1,4 +1,4 @@
-import type { ResourceSummary, VisualizationAgent, VisualizationState } from "../types/visualization";
+import type { ResourceSummary, VisualizationAgent } from "../types/visualization";
 import { formatTokenCount, getAgentTokenUsage } from "../lib/tokenModels";
 import coderPortrait from "../assets/resource-agents/coder.png";
 import criteriaPortrait from "../assets/resource-agents/criteria.png";
@@ -9,10 +9,7 @@ import reviewerPortrait from "../assets/resource-agents/reviewer.png";
 type AgentResourcePanelProps = {
   agents: VisualizationAgent[];
   isOpen: boolean;
-  issue: VisualizationState["issue"];
   onToggle: () => void;
-  onRetry: () => void;
-  onTestError: () => void;
   summary: ResourceSummary;
 };
 
@@ -35,9 +32,6 @@ const resourcePortraits: Partial<Record<VisualizationAgent["role"], string>> = {
 export function AgentResourcePanel({
   agents,
   isOpen,
-  issue,
-  onRetry,
-  onTestError,
   onToggle,
   summary,
 }: AgentResourcePanelProps) {
@@ -46,11 +40,11 @@ export function AgentResourcePanel({
       <div className="panel-heading">
         <h2>에이전트와 자원</h2>
         <button
-          className="resource-panel-toggle"
+          className="activity-panel-toggle"
           onClick={onToggle}
           type="button"
           aria-expanded={isOpen}
-          aria-label="에이전트와 자원 닫기"
+          aria-label="활동 로그 닫기"
         >
           <span className="drawer-toggle-icon" />
         </button>
@@ -112,24 +106,6 @@ export function AgentResourcePanel({
           <small>(약 $0.25)</small>
         </div>
       </section>
-      <section className="status-legend" aria-label="상태 아이콘 안내">
-        <span><i className="legend-work" /> 작업 중</span>
-        <span><i className="legend-idle" /> 대기 중</span>
-        <span><i className="legend-done" /> 완료</span>
-        <span><i className="legend-error" /> 문제 발생</span>
-      </section>
-      <button className="error-test-button" onClick={onTestError} type="button">
-        에러 테스트
-      </button>
-      {issue.visible ? (
-        <section className="issue-alert">
-          <strong>{issue.message}</strong>
-          <div>
-            <button type="button">자세히 보기</button>
-            <button onClick={onRetry} type="button">다시 시도</button>
-          </div>
-        </section>
-      ) : null}
     </aside>
   );
 }

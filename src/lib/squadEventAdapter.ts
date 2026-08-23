@@ -12,7 +12,6 @@ import { getAgentTokenUsage } from "./tokenModels";
 
 type ReplayOptions = {
   elapsedSeconds: number;
-  isErrorTest: boolean;
   isPaused: boolean;
   isStopped: boolean;
 };
@@ -23,7 +22,7 @@ const handoffSlots: HandoffTrailNode["slot"][] = ["edge-left", "near-left", "cen
 
 export function createVisualizationState(
   replay: MockReplay,
-  { elapsedSeconds, isErrorTest, isPaused, isStopped }: ReplayOptions,
+  { elapsedSeconds, isPaused, isStopped }: ReplayOptions,
 ): VisualizationState {
   const activeEvents = replay.events
     .filter((event) => event.at <= elapsedSeconds)
@@ -44,6 +43,7 @@ export function createVisualizationState(
   let activeAgentId: string | undefined;
   let latestLogId: string | undefined;
   let stageMessage = "팀이 문제를 살펴볼 준비를 하고 있어요";
+  const isReplayFinished = elapsedSeconds >= replay.durationSeconds;
 
   for (const event of activeEvents) {
     switch (event.type) {
@@ -113,31 +113,16 @@ export function createVisualizationState(
     statusTone = "paused";
   }
 
-  if (isErrorTest) {
-    const reviewer = agents.find((agent) => agent.id === "reviewer");
-
-    if (reviewer) {
-      reviewer.status = "error";
-      reviewer.statusLabel = "에러";
-      reviewer.currentTask = "에러 테스트에서 실패 상태를 확인하고 있어요";
+  if (isReplayFinished && !isStopped) {
+    if (issue.visible || statusTone === "attention") {
+      statusLabel = "Replay failed";
+      statusTone = "attention";
+      stageMessage = issue.message || "Replay가 실패 상태로 종료됐어요";
+    } else {
+      statusLabel = "Replay complete";
+      statusTone = "complete";
+      stageMessage = "모든 에이전트가 작업을 완료했어요";
     }
-
-    statusLabel = "Needs attention";
-    statusTone = "attention";
-    issue.visible = true;
-    issue.message = "에러 테스트: 검사자 단계에서 실패를 확인했어요";
-    activeAgentId = "reviewer";
-    latestLogId = "error-test-log";
-    stageMessage = "에러 테스트가 실행됐어요";
-    logs.push({
-      id: "error-test-log",
-      timeGroup: "지금 막",
-      agentId: "reviewer",
-      agentName: reviewer?.name ?? "검사자",
-      message: "테스트용 에러가 발생했어요",
-      status: "error",
-      icon: "issue",
-    });
   }
 
   if (isStopped) {
@@ -147,6 +132,12 @@ export function createVisualizationState(
     issue.message = "Replay가 중지됐어요";
     stageMessage = "사용자가 replay를 멈췄어요";
   }
+
+  const displayedAgents = resolveDisplayedAgents(agents, {
+    isFailed: statusTone === "attention" && isReplayFinished && !isStopped,
+    isComplete: statusTone === "complete" && isReplayFinished && !isStopped,
+    isStopped,
+  });
 
   return {
     run: {
@@ -159,18 +150,55 @@ export function createVisualizationState(
       isPaused,
       isStopped,
     },
-    agents: isStopped ? stopAgents(agents) : agents,
+    agents: displayedAgents,
     logs: logs.reverse(),
     rawTraceLogs: createRawTraceLogs(activeEvents),
     latestLogId,
     activeAgentId,
     stageMessage,
     steps: createSteps(activeStepId),
-    handoffTrail: createHandoffTrail(agents, activeEvents, statusTone === "complete"),
+    handoffTrail: createHandoffTrail(displayedAgents, activeEvents, statusTone === "complete"),
     reason,
-    summary: createResourceSummary(agents),
+    summary: createResourceSummary(displayedAgents),
     issue,
   };
+}
+
+function resolveDisplayedAgents(
+  agents: VisualizationAgent[],
+  {
+    isComplete,
+    isFailed,
+    isStopped,
+  }: {
+    isComplete: boolean;
+    isFailed: boolean;
+    isStopped: boolean;
+  },
+) {
+  if (isStopped) {
+    return stopAgents(agents);
+  }
+
+  if (isFailed) {
+    return agents.map((agent) => ({
+      ...agent,
+      status: "error" as const,
+      statusLabel: "실패",
+      currentTask: "Replay 실패 결과를 확인했어요",
+    }));
+  }
+
+  if (isComplete) {
+    return agents.map((agent) => ({
+      ...agent,
+      status: "completed" as const,
+      statusLabel: "완료",
+      currentTask: "Replay 작업을 완료했어요",
+    }));
+  }
+
+  return agents;
 }
 
 function createRawTraceLogs(events: MockReplayEvent[]): RawTraceLog[] {

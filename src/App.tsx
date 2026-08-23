@@ -4,18 +4,21 @@ import { AgentResourcePanel } from "./components/AgentResourcePanel";
 import { CollaborationStage } from "./components/CollaborationStage";
 import { HandoffTrail } from "./components/HandoffTrail";
 import { TopRunBar } from "./components/TopRunBar";
-import { goSampleReplay } from "./data/goSampleReplay";
+import { replayScenarios, type ReplayScenarioId } from "./data/replayScenarios";
 import { createVisualizationState } from "./lib/squadEventAdapter";
 
-const activeReplay = goSampleReplay;
-
 function App() {
+  const [selectedScenarioId, setSelectedScenarioId] = useState<ReplayScenarioId>("success");
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [isActivityPanelOpen, setIsActivityPanelOpen] = useState(true);
   const [isResourcePanelOpen, setIsResourcePanelOpen] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [isStopped, setIsStopped] = useState(false);
-  const [isErrorTest, setIsErrorTest] = useState(false);
+  const activeReplay = useMemo(
+    () => replayScenarios.find((scenario) => scenario.id === selectedScenarioId)?.replay ?? replayScenarios[0].replay,
+    [selectedScenarioId],
+  );
+  const hasReplayEnded = elapsedSeconds >= activeReplay.durationSeconds;
 
   useEffect(() => {
     if (isPaused || isStopped || elapsedSeconds >= activeReplay.durationSeconds) {
@@ -27,38 +30,54 @@ function App() {
     }, 1000);
 
     return () => window.clearInterval(timer);
-  }, [elapsedSeconds, isPaused, isStopped]);
+  }, [activeReplay.durationSeconds, elapsedSeconds, isPaused, isStopped]);
 
   const visualization = useMemo(
     () =>
       createVisualizationState(activeReplay, {
         elapsedSeconds,
-        isErrorTest,
         isPaused,
         isStopped,
       }),
-    [elapsedSeconds, isErrorTest, isPaused, isStopped],
+    [activeReplay, elapsedSeconds, isPaused, isStopped],
   );
 
-  const handleRetry = () => {
+  const resetReplay = () => {
     setElapsedSeconds(0);
-    setIsErrorTest(false);
     setIsPaused(false);
     setIsStopped(false);
   };
 
-  const handleTestError = () => {
-    setIsErrorTest(true);
-    setIsPaused(true);
+  const handleScenarioChange = (scenarioId: ReplayScenarioId) => {
+    setSelectedScenarioId(scenarioId);
+    setElapsedSeconds(0);
+    setIsPaused(false);
     setIsStopped(false);
+  };
+
+  const handlePrimaryControl = () => {
+    if (isStopped || hasReplayEnded) {
+      resetReplay();
+      return;
+    }
+
+    setIsPaused((current) => !current);
+  };
+
+  const handleStop = () => {
+    setIsStopped(true);
+    setIsPaused(false);
   };
 
   return (
     <main className="app-shell">
       <TopRunBar
-        onStop={() => setIsStopped(true)}
-        onTogglePause={() => setIsPaused((current) => !current)}
+        onPrimaryControl={handlePrimaryControl}
+        onScenarioChange={handleScenarioChange}
+        onStop={handleStop}
         run={visualization.run}
+        scenarioId={selectedScenarioId}
+        scenarios={replayScenarios}
       />
       <section
         className={`workspace ${isActivityPanelOpen ? "activity-open" : "activity-collapsed"} ${
@@ -104,11 +123,8 @@ function App() {
         </section>
         <AgentResourcePanel
           agents={visualization.agents}
-          issue={visualization.issue}
           isOpen={isResourcePanelOpen}
           onToggle={() => setIsResourcePanelOpen((current) => !current)}
-          onRetry={handleRetry}
-          onTestError={handleTestError}
           summary={visualization.summary}
         />
       </section>
