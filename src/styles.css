@@ -957,8 +957,8 @@ button {
   z-index: 1;
   display: grid;
   justify-items: center;
-  min-width: clamp(106px, 16.92cqw, 132px);
-  --agent-image-height: clamp(120px, 19.23cqw, 150px);
+  min-width: clamp(143px, 22.85cqw, 178px);
+  --agent-image-height: clamp(162px, 25.96cqw, 203px);
   border: 0;
   background: transparent;
   color: #ffffff;
@@ -978,17 +978,17 @@ button {
 }
 
 .stage-agent.coder {
-  top: clamp(90px, 14.36cqw, 112px);
+  top: clamp(106px, 16.41cqw, 128px);
   left: 14.5%;
 }
 
 .stage-agent.reviewer {
-  top: clamp(79px, 12.56cqw, 98px);
+  top: clamp(95px, 14.61cqw, 114px);
   left: 50%;
 }
 
 .stage-agent.judge {
-  top: clamp(86px, 13.85cqw, 108px);
+  top: clamp(102px, 15.9cqw, 124px);
   left: 84.5%;
 }
 
@@ -1004,7 +1004,7 @@ button {
 .agent-image-wrap {
   position: relative;
   display: grid;
-  width: clamp(120px, 19.23cqw, 150px);
+  width: clamp(162px, 25.96cqw, 203px);
   height: var(--agent-image-height);
   place-items: end center;
 }
