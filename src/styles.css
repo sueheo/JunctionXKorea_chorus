@@ -36,13 +36,21 @@ button {
 
 .top-run-bar {
   display: grid;
-  grid-template-columns: 154px 244px minmax(190px, 1fr) 86px 82px 66px;
+  grid-template-columns: 154px 244px minmax(0, 1fr);
   align-items: center;
   gap: 12px;
   height: 60px;
   padding: 4px 18px;
   border-bottom: 1px solid #e8edf4;
   background: rgba(255, 255, 255, 0.95);
+}
+
+.top-control-cluster {
+  justify-self: end;
+  display: grid;
+  grid-template-columns: 176px 72px 78px 62px;
+  align-items: center;
+  gap: 10px;
 }
 
 .brand-mark {
@@ -138,6 +146,10 @@ button {
   border-left: 1px solid #e4e9f1;
 }
 
+.top-resource-summary {
+  width: 176px;
+}
+
 .top-resource-summary > div {
   display: flex;
   align-items: baseline;
@@ -189,8 +201,8 @@ button {
   justify-content: center;
   gap: 6px;
   width: 100%;
-  min-height: 36px;
-  padding: 0 10px;
+  min-height: 34px;
+  padding: 0 9px;
   border: 1px solid #d9dee7;
   border-radius: 12px;
   background: #ffffff;
@@ -212,10 +224,10 @@ button {
 }
 
 .control-button.pause .control-icon {
-  width: 10px;
-  height: 14px;
-  border-right: 4px solid currentColor;
-  border-left: 4px solid currentColor;
+  width: 9px;
+  height: 13px;
+  border-right: 3px solid currentColor;
+  border-left: 3px solid currentColor;
 }
 
 .control-button.play .control-icon {
