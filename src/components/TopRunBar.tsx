@@ -1,5 +1,6 @@
 import type { ReplayScenario, ReplayScenarioId } from "../data/replayScenarios";
-import type { RunSummary } from "../types/visualization";
+import { formatTokenCount } from "../lib/tokenModels";
+import type { ResourceSummary, RunSummary } from "../types/visualization";
 
 type TopRunBarProps = {
   onPrimaryControl: () => void;
@@ -8,11 +9,21 @@ type TopRunBarProps = {
   run: RunSummary;
   scenarioId: ReplayScenarioId;
   scenarios: ReplayScenario[];
+  summary: ResourceSummary;
 };
 
-export function TopRunBar({ onPrimaryControl, onScenarioChange, onStop, run, scenarioId, scenarios }: TopRunBarProps) {
+export function TopRunBar({
+  onPrimaryControl,
+  onScenarioChange,
+  onStop,
+  run,
+  scenarioId,
+  scenarios,
+  summary,
+}: TopRunBarProps) {
   const shouldShowPlay = run.isPaused || run.isStopped || run.statusTone === "complete";
   const primaryLabel = shouldShowPlay ? (run.isStopped || run.statusTone === "complete" ? "Replay 다시 재생" : "Replay 재개") : "Replay 일시정지";
+  const tokenPercent = Math.min(100, (summary.totalTokens / summary.tokenLimit) * 100);
 
   return (
     <header className="top-run-bar">
@@ -43,12 +54,15 @@ export function TopRunBar({ onPrimaryControl, onScenarioChange, onStop, run, sce
         <span className="status-dot" />
         <strong>{run.statusLabel}</strong>
       </div>
-      <div className="step-counter">
-        <strong>
-          {run.currentStep}/{run.totalSteps}
-        </strong>
+      <div className="top-resource-summary" aria-label="전체 토큰과 예상 비용">
+        <div>
+          <strong>
+            토큰 {formatTokenCount(summary.totalTokens)} / {formatTokenCount(summary.tokenLimit)}
+          </strong>
+          <span>₩{summary.estimatedCostKrw.toLocaleString("ko-KR")}</span>
+        </div>
         <span className="progress-track">
-          <span style={{ width: `${(run.currentStep / run.totalSteps) * 100}%` }} />
+          <span style={{ width: `${tokenPercent}%` }} />
         </span>
       </div>
       <div className="elapsed-time">

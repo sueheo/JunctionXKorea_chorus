@@ -36,7 +36,7 @@ button {
 
 .top-run-bar {
   display: grid;
-  grid-template-columns: 146px 244px minmax(136px, 1fr) 116px 86px 42px 42px;
+  grid-template-columns: 146px 244px minmax(136px, 1fr) 190px 86px 42px 42px;
   align-items: center;
   gap: 12px;
   height: 52px;
@@ -125,7 +125,6 @@ button {
 
 .project-picker small,
 .elapsed-time span,
-.resource-summary span,
 .agent-resource-card small {
   color: #667085;
   font-size: 11px;
@@ -215,7 +214,7 @@ button {
   box-shadow: 0 0 0 5px rgba(18, 174, 75, 0.1);
 }
 
-.step-counter,
+.top-resource-summary,
 .elapsed-time {
   display: grid;
   gap: 4px;
@@ -223,8 +222,24 @@ button {
   border-left: 1px solid #e4e9f1;
 }
 
-.step-counter strong {
+.top-resource-summary > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.top-resource-summary strong {
   font-size: 12px;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.top-resource-summary > div > span {
+  color: #667085;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .progress-track {
@@ -338,8 +353,8 @@ button {
   width: 380px;
   min-width: 380px;
   height: 100%;
-  overflow-y: auto;
-  padding: 24px 22px 18px;
+  overflow: hidden;
+  padding: 22px 22px 14px;
   border-color: #e4e7ec;
   border-radius: 0;
   background: #FBFBFA;
@@ -564,7 +579,7 @@ button {
   align-items: center;
   justify-items: center;
   gap: 0;
-  margin-top: 21px;
+  margin-top: 14px;
   padding-bottom: 10px;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -815,7 +830,11 @@ button {
 }
 
 .resource-panel .agent-card-list {
-  margin-top: 22px;
+  flex: 1;
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+  min-height: 0;
+  margin-top: 14px;
+  gap: 10px;
 }
 
 .log-group {
@@ -1476,11 +1495,11 @@ button {
 .agent-resource-card {
   position: relative;
   display: grid;
-  grid-template-columns: 70px minmax(0, 1fr);
+  grid-template-columns: 62px minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  min-height: 100px;
-  padding: 13px 14px;
+  gap: 11px;
+  min-height: 0;
+  padding: 10px 13px;
   border: 1px solid #e0e5ed;
   border-radius: 17px;
   background: #ffffff;
@@ -1500,21 +1519,21 @@ button {
 
 .resource-agent-portrait {
   display: grid;
-  width: 68px;
-  height: 68px;
+  width: 62px;
+  height: 62px;
   place-items: center;
 }
 
 .resource-agent-portrait img {
   display: block;
-  width: 76px;
-  height: 76px;
+  width: 68px;
+  height: 68px;
   object-fit: contain;
 }
 
 .agent-resource-card p {
   max-width: 196px;
-  margin-top: 4px;
+  margin-top: 3px;
   color: #4b5563;
   font-size: 12px;
   font-weight: 600;
@@ -1523,8 +1542,8 @@ button {
 
 .agent-resource-card .progress-track {
   width: min(100%, 190px);
-  height: 9px;
-  margin: 8px 0 0;
+  height: 8px;
+  margin: 6px 0 0;
   border-radius: 999px;
   background: #eeeeef;
 }
@@ -1541,7 +1560,7 @@ button {
   justify-content: space-between;
   gap: 8px;
   width: min(100%, 190px);
-  margin-top: 5px;
+  margin-top: 4px;
 }
 
 .agent-resource-card small {
@@ -1590,71 +1609,4 @@ button {
 .agent-resource-card em.error {
   background: #fff1f1;
   color: #e4262f;
-}
-
-.resource-summary {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 22px;
-  margin-top: 18px;
-  padding: 18px 22px;
-  border: 0;
-  border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 2px 14px rgba(16, 24, 40, 0.05);
-}
-
-.resource-summary div {
-  display: grid;
-  min-width: 0;
-  gap: 7px;
-  justify-items: start;
-}
-
-.resource-summary div + div {
-  padding-left: 22px;
-  border-left: 1px solid #d7dce5;
-}
-
-.resource-summary span {
-  color: #4b5563;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.resource-summary strong {
-  color: #111827;
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.resource-summary small {
-  color: #a3a5aa;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.resource-summary .summary-limit {
-  color: #b1b4bb;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.summary-progress {
-  display: block;
-  width: min(100%, 144px);
-  max-width: 144px;
-  height: 10px;
-  margin-top: 5px;
-  border-radius: 999px;
-  background: #eeeeef;
-  overflow: hidden;
-}
-
-.summary-progress span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: #0ba04c;
 }

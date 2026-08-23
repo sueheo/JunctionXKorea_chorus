@@ -1,4 +1,4 @@
-import type { ResourceSummary, VisualizationAgent } from "../types/visualization";
+import type { VisualizationAgent } from "../types/visualization";
 import { formatTokenCount, getAgentTokenUsage } from "../lib/tokenModels";
 import coderPortrait from "../assets/resource-agents/coder.png";
 import criteriaPortrait from "../assets/resource-agents/criteria.png";
@@ -10,7 +10,6 @@ type AgentResourcePanelProps = {
   agents: VisualizationAgent[];
   isOpen: boolean;
   onToggle: () => void;
-  summary: ResourceSummary;
 };
 
 const statusTone = {
@@ -33,7 +32,6 @@ export function AgentResourcePanel({
   agents,
   isOpen,
   onToggle,
-  summary,
 }: AgentResourcePanelProps) {
   return (
     <aside className="resource-panel" aria-label="에이전트와 자원">
@@ -89,23 +87,6 @@ export function AgentResourcePanel({
           );
         })}
       </div>
-      <section className="resource-summary">
-        <div>
-          <span>전체 토큰</span>
-          <strong>
-            {(summary.totalTokens / 1000).toFixed(1)}k
-            <span className="summary-limit"> / {(summary.tokenLimit / 1000).toFixed(0)}k</span>
-          </strong>
-          <span className="summary-progress">
-            <span style={{ width: `${(summary.totalTokens / summary.tokenLimit) * 100}%` }} />
-          </span>
-        </div>
-        <div>
-          <span>예상 비용</span>
-          <strong>₩{summary.estimatedCostKrw.toLocaleString("ko-KR")}</strong>
-          <small>(약 $0.25)</small>
-        </div>
-      </section>
     </aside>
   );
 }

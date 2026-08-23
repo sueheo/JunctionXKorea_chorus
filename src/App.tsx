@@ -78,6 +78,7 @@ function App() {
         run={visualization.run}
         scenarioId={selectedScenarioId}
         scenarios={replayScenarios}
+        summary={visualization.summary}
       />
       <section
         className={`workspace ${isActivityPanelOpen ? "activity-open" : "activity-collapsed"} ${
@@ -125,7 +126,6 @@ function App() {
           agents={visualization.agents}
           isOpen={isResourcePanelOpen}
           onToggle={() => setIsResourcePanelOpen((current) => !current)}
-          summary={visualization.summary}
         />
       </section>
     </main>
