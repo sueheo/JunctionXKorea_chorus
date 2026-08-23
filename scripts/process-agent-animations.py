@@ -6,8 +6,6 @@ import unicodedata
 from collections import deque
 from pathlib import Path
 
-import numpy as np
-
 
 ROLE_NAMES = {
     "검사자": "reviewer",
@@ -32,7 +30,9 @@ def normalized_name(path: Path) -> str:
     return unicodedata.normalize("NFC", path.stem if path.is_file() else path.name).replace(" ", "")
 
 
-def edge_connected_background(dark_mask: np.ndarray) -> np.ndarray:
+def edge_connected_background(dark_mask):
+    import numpy as np
+
     height, width = dark_mask.shape
     background = np.zeros_like(dark_mask, dtype=bool)
     queue: deque[tuple[int, int]] = deque()
@@ -64,6 +64,8 @@ def edge_connected_background(dark_mask: np.ndarray) -> np.ndarray:
 
 
 def process_frame(frame: bytes, width: int, height: int, threshold: int) -> bytes:
+    import numpy as np
+
     rgb = np.frombuffer(frame, dtype=np.uint8).reshape((height, width, 3)).copy()
     dark_mask = np.all(rgb <= threshold, axis=2)
     background = edge_connected_background(dark_mask)
@@ -77,6 +79,10 @@ def process_frame(frame: bytes, width: int, height: int, threshold: int) -> byte
 
 def convert_video(source: Path, destination: Path, size: int, fps: int, threshold: int, crf: int) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
+    if source_has_alpha(source):
+        convert_video_with_alpha(source, destination, size, fps, crf)
+        return
+
     frame_size = size * size * 3
 
     decoder = subprocess.Popen(
@@ -153,6 +159,58 @@ def convert_video(source: Path, destination: Path, size: int, fps: int, threshol
         raise RuntimeError(f"ffmpeg failed for {source} -> {destination}")
 
 
+def source_has_alpha(source: Path) -> bool:
+    result = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-select_streams",
+            "v:0",
+            "-show_entries",
+            "stream=pix_fmt",
+            "-of",
+            "default=noprint_wrappers=1:nokey=1",
+            str(source),
+        ],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+    pix_fmt = result.stdout.strip().lower()
+    return pix_fmt.startswith(("yuva", "rgba", "bgra", "argb", "abgr", "gbrap", "ya"))
+
+
+def convert_video_with_alpha(source: Path, destination: Path, size: int, fps: int, crf: int) -> None:
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-loglevel",
+            "error",
+            "-i",
+            str(source),
+            "-an",
+            "-vf",
+            f"fps={fps},scale={size}:{size}:flags=lanczos,format=yuva420p",
+            "-c:v",
+            "libvpx-vp9",
+            "-pix_fmt",
+            "yuva420p",
+            "-b:v",
+            "0",
+            "-crf",
+            str(crf),
+            "-row-mt",
+            "1",
+            "-auto-alt-ref",
+            "0",
+            str(destination),
+        ],
+        check=True,
+    )
+
+
 def iter_sources(source_root: Path) -> list[tuple[Path, str, str]]:
     sources: list[tuple[Path, str, str]] = []
     for role_dir in sorted(source_root.iterdir()):
@@ -161,7 +219,7 @@ def iter_sources(source_root: Path) -> list[tuple[Path, str, str]]:
         role = ROLE_NAMES.get(normalized_name(role_dir))
         if not role:
             continue
-        for video in sorted(role_dir.glob("*.mp4")):
+        for video in sorted([*role_dir.glob("*.mov"), *role_dir.glob("*.mp4")]):
             state = STATE_NAMES.get(normalized_name(video))
             if not state:
                 continue

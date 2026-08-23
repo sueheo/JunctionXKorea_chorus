@@ -5,6 +5,7 @@ import coderError from "../assets/agent-animations/coder/error.webm";
 import coderIdle from "../assets/agent-animations/coder/idle.webm";
 import coderWorking from "../assets/agent-animations/coder/working.webm";
 import criteriaCompleted from "../assets/agent-animations/criteria/completed.webm";
+import criteriaDefault from "../assets/agent-animations/criteria/default.webm";
 import criteriaError from "../assets/agent-animations/criteria/error.webm";
 import criteriaIdle from "../assets/agent-animations/criteria/idle.webm";
 import criteriaReady from "../assets/agent-animations/criteria/ready.webm";
@@ -37,7 +38,7 @@ const agentAnimations: AnimationMap = {
   },
   criteria: {
     completed: criteriaCompleted,
-    default: criteriaIdle,
+    default: criteriaDefault,
     error: criteriaError,
     idle: criteriaIdle,
     ready: criteriaReady,
