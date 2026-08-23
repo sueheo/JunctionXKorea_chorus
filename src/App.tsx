@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ActivityLogPanel } from "./components/ActivityLogPanel";
 import { AgentResourcePanel } from "./components/AgentResourcePanel";
 import { CollaborationStage } from "./components/CollaborationStage";
+import { HandoffTrail } from "./components/HandoffTrail";
 import { TopRunBar } from "./components/TopRunBar";
 import { goSampleReplay } from "./data/goSampleReplay";
 import { createVisualizationState } from "./lib/squadEventAdapter";
@@ -89,6 +90,7 @@ function App() {
             agents={visualization.agents}
             stageMessage={visualization.stageMessage}
           />
+          <HandoffTrail agents={visualization.agents} nodes={visualization.handoffTrail} />
         </section>
         <AgentResourcePanel
           agents={visualization.agents}

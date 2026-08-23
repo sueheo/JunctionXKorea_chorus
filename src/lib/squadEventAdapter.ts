@@ -1,6 +1,7 @@
 import type {
   MockReplay,
   MockReplayEvent,
+  HandoffTrailNode,
   VisualizationAgent,
   VisualizationLog,
   VisualizationState,
@@ -14,6 +15,7 @@ type ReplayOptions = {
 };
 
 const stepOrder = ["find", "fix", "verify"];
+const maxHandoffTrailNodes = 3;
 
 export function createVisualizationState(
   replay: MockReplay,
@@ -132,6 +134,7 @@ export function createVisualizationState(
     activeAgentId,
     stageMessage,
     steps: createSteps(activeStepId),
+    handoffTrail: createHandoffTrail(agents, activeEvents, statusTone === "complete"),
     reason,
     summary: createResourceSummary(agents),
     issue,
@@ -192,6 +195,61 @@ function createSteps(activeStepId: string): VisualizationStep[] {
     { id: "fix", label: "수정하기", state: resolveStepState("fix", activeStepId) },
     { id: "verify", label: "확인하기", state: resolveStepState("verify", activeStepId) },
   ];
+}
+
+function createHandoffTrail(
+  agents: VisualizationAgent[],
+  events: MockReplayEvent[],
+  isComplete: boolean,
+): HandoffTrailNode[] {
+  const agentIds = events
+    .filter(isHandoffTrailEvent)
+    .map((event) => event.agentId)
+    .filter((agentId): agentId is string => Boolean(agentId) && agents.some((agent) => agent.id === agentId));
+  const orderedAgentIds = collapseConsecutiveDuplicates(agentIds);
+  const visibleAgentIds = orderedAgentIds.slice(-maxHandoffTrailNodes);
+
+  if (visibleAgentIds.length === 0) {
+    const firstAgent = agents.find((agent) => agent.id === "orchestrator") ?? agents[0];
+
+    return firstAgent
+      ? [
+          {
+            id: `${firstAgent.id}-initial`,
+            agentId: firstAgent.id,
+            label: firstAgent.name,
+            state: "active",
+          },
+        ]
+      : [];
+  }
+
+  return visibleAgentIds.map((agentId, index) => {
+    const agent = agents.find((item) => item.id === agentId);
+    const isLast = index === visibleAgentIds.length - 1;
+
+    return {
+      id: `${agentId}-${orderedAgentIds.length - visibleAgentIds.length + index}`,
+      agentId,
+      label: agent?.name ?? "에이전트",
+      state: isComplete || !isLast ? "done" : "active",
+    };
+  });
+}
+
+function isHandoffTrailEvent(event: MockReplayEvent) {
+  return (
+    Boolean(event.agentId) &&
+    (event.type === "agent_status_changed" ||
+      event.type === "log_added" ||
+      event.type === "issue_found" ||
+      event.type === "reason_changed" ||
+      event.type === "run_completed")
+  );
+}
+
+function collapseConsecutiveDuplicates(agentIds: string[]) {
+  return agentIds.filter((agentId, index) => index === 0 || agentId !== agentIds[index - 1]);
 }
 
 function resolveStepState(stepId: string, activeStepId: string): VisualizationStep["state"] {

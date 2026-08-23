@@ -39,6 +39,13 @@ export type VisualizationStep = {
   state: "done" | "active" | "upcoming";
 };
 
+export type HandoffTrailNode = {
+  id: string;
+  agentId: string;
+  label: string;
+  state: "done" | "active" | "upcoming";
+};
+
 export type RunSummary = {
   projectName: string;
   statusLabel: string;
@@ -104,6 +111,7 @@ export type VisualizationState = {
   activeAgentId?: string;
   stageMessage: string;
   steps: VisualizationStep[];
+  handoffTrail: HandoffTrailNode[];
   reason: {
     title: string;
     body: string;

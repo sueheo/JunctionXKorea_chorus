@@ -1128,6 +1128,138 @@ button {
   rotate: -25deg;
 }
 
+.handoff-trail {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: min(100%, 640px);
+  min-height: 74px;
+  margin: 8px auto 16px;
+  padding: 6px 12px;
+  overflow: hidden;
+}
+
+.handoff-trail-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+  animation: handoff-node-enter 220ms ease both;
+}
+
+.handoff-agent {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  min-width: 58px;
+  color: #667085;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+  transition:
+    color 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.handoff-agent img,
+.handoff-agent .agent-avatar {
+  display: block;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  transition:
+    filter 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.handoff-agent span:last-child {
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.handoff-agent.done {
+  color: #179f55;
+}
+
+.handoff-agent.active {
+  color: #0f7a3d;
+  transform: translateY(-3px);
+}
+
+.handoff-agent.active img,
+.handoff-agent.active .agent-avatar {
+  filter: drop-shadow(0 0 14px rgba(74, 222, 128, 0.75));
+  transform: scale(1.12);
+}
+
+.handoff-agent.upcoming {
+  opacity: 0.45;
+}
+
+.handoff-connector {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #d1d5db;
+}
+
+.handoff-connector i {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.handoff-connector b {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-top: 6px solid currentColor;
+  border-right: 6px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.handoff-connector.done,
+.handoff-connector.active {
+  color: #54d987;
+}
+
+.handoff-connector.active i {
+  animation: handoff-pulse 920ms ease-in-out infinite alternate;
+}
+
+@keyframes handoff-node-enter {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes handoff-pulse {
+  from {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
 .step-progress {
   display: flex;
   justify-content: center;
