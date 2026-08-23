@@ -1380,8 +1380,32 @@ button {
   border-radius: inherit;
 }
 
+.token-meter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: min(100%, 190px);
+  margin-top: 5px;
+}
+
 .agent-resource-card small {
-  display: none;
+  display: block;
+  color: #374151;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.token-meter-row span {
+  flex: 0 0 auto;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #4b5563;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .agent-resource-card em {

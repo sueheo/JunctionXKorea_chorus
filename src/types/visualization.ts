@@ -8,10 +8,13 @@ export type AgentRole =
   | "judge"
   | "conductor";
 
+export type TokenModelName = "Qwen" | "GPT" | "EXAONE";
+
 export type VisualizationAgent = {
   id: string;
   name: string;
   role: AgentRole;
+  modelName: TokenModelName;
   description: string;
   status: AgentStatus;
   statusLabel: string;

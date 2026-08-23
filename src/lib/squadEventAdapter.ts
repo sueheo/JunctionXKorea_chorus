@@ -7,6 +7,7 @@ import type {
   VisualizationState,
   VisualizationStep,
 } from "../types/visualization";
+import { getAgentTokenUsage } from "./tokenModels";
 
 type ReplayOptions = {
   elapsedSeconds: number;
@@ -268,11 +269,12 @@ function resolveStepState(stepId: string, activeStepId: string): VisualizationSt
 }
 
 function createResourceSummary(agents: VisualizationAgent[]) {
-  const totalTokens = agents.reduce((sum, agent) => sum + agent.tokenUsed, 0);
+  const totalTokens = agents.reduce((sum, agent) => sum + getAgentTokenUsage(agent).weightedUsed, 0);
+  const tokenLimit = agents.reduce((sum, agent) => sum + getAgentTokenUsage(agent).weightedLimit, 0);
 
   return {
     totalTokens,
-    tokenLimit: 20000,
+    tokenLimit,
     estimatedCostKrw: Math.round(totalTokens * 0.05),
   };
 }

@@ -61,6 +61,7 @@ export function ActivityLogPanel({ agents, isOpen, latestLogId, logs, onToggle }
           <button className={`activity-log-item ${log.id === latestLogId ? "is-latest" : ""}`} key={log.id} type="button">
             <span
               className={`activity-status-dot ${resolveLogTone(log, agentById[log.agentId])}`}
+              style={{ backgroundColor: resolveLogColor(log, agentById[log.agentId]) }}
               aria-hidden="true"
             />
             <span className="activity-log-copy">
@@ -74,6 +75,22 @@ export function ActivityLogPanel({ agents, isOpen, latestLogId, logs, onToggle }
       </div>
     </aside>
   );
+}
+
+function resolveLogColor(log: VisualizationLog, agent?: VisualizationAgent) {
+  if (agent?.accentColor) {
+    return agent.accentColor;
+  }
+
+  if (log.icon === "issue" || log.status === "error") {
+    return "#ef4444";
+  }
+
+  if (log.icon === "check" || log.status === "completed") {
+    return "#27ae60";
+  }
+
+  return "#2ea3f2";
 }
 
 function resolveLogTone(log: VisualizationLog, agent?: VisualizationAgent) {

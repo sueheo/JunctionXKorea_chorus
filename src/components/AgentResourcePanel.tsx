@@ -1,4 +1,5 @@
 import type { ResourceSummary, VisualizationAgent, VisualizationState } from "../types/visualization";
+import { formatTokenCount, getAgentTokenUsage } from "../lib/tokenModels";
 import coderPortrait from "../assets/resource-agents/coder.png";
 import criteriaPortrait from "../assets/resource-agents/criteria.png";
 import judgePortrait from "../assets/resource-agents/judge.png";
@@ -46,35 +47,44 @@ export function AgentResourcePanel({ agents, isOpen, issue, onRetry, onToggle, s
         </button>
       </div>
       <div className="agent-card-list">
-        {agents.map((agent) => (
-          <article className="agent-resource-card" key={agent.id}>
-            <span className="resource-agent-portrait">
-              {resourcePortraits[agent.role] ? (
-                <img alt={`${agent.name} 캐릭터`} src={resourcePortraits[agent.role]} />
-              ) : (
-                <span className={`agent-avatar large ${agent.role}`} style={{ backgroundColor: agent.color }}>
-                  {agent.name.slice(0, 1)}
-                </span>
-              )}
-            </span>
-            <div>
-              <strong>{agent.name}</strong>
-              <p>{agent.description}</p>
-              <span className="progress-track">
-                <span
-                  style={{
-                    width: `${(agent.tokenUsed / agent.tokenLimit) * 100}%`,
-                    backgroundColor: agent.accentColor,
-                  }}
-                />
+        {agents.map((agent) => {
+          const tokenUsage = getAgentTokenUsage(agent);
+
+          return (
+            <article className="agent-resource-card" key={agent.id}>
+              <span className="resource-agent-portrait">
+                {resourcePortraits[agent.role] ? (
+                  <img alt={`${agent.name} 캐릭터`} src={resourcePortraits[agent.role]} />
+                ) : (
+                  <span className={`agent-avatar large ${agent.role}`} style={{ backgroundColor: agent.color }}>
+                    {agent.name.slice(0, 1)}
+                  </span>
+                )}
               </span>
-              <small>
-                토큰 {(agent.tokenUsed / 1000).toFixed(1)}k / {(agent.tokenLimit / 1000).toFixed(0)}k
-              </small>
-            </div>
-            <em className={statusTone[agent.status]}>{agent.statusLabel}</em>
-          </article>
-        ))}
+              <div>
+                <strong>{agent.name}</strong>
+                <p>{agent.description}</p>
+                <span className="progress-track" aria-label={`${agent.name} 토큰 사용량`}>
+                  <span
+                    style={{
+                      width: `${tokenUsage.percent}%`,
+                      backgroundColor: agent.accentColor,
+                    }}
+                  />
+                </span>
+                <div className="token-meter-row">
+                  <small>
+                    토큰 {formatTokenCount(tokenUsage.weightedUsed)} / {formatTokenCount(tokenUsage.weightedLimit)}
+                  </small>
+                  <span>
+                    {tokenUsage.modelLabel} x{tokenUsage.multiplier}
+                  </span>
+                </div>
+              </div>
+              <em className={statusTone[agent.status]}>{agent.statusLabel}</em>
+            </article>
+          );
+        })}
       </div>
       <section className="resource-summary">
         <div>

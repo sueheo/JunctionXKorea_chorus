@@ -63,7 +63,6 @@ export function createGoReplay(
           ? "GO 로그를 replay로 바꿀 준비를 하고 있어요"
           : "GO 로그 이벤트를 기다리고 있어요",
       tokenUsed: 0,
-      tokenLimit: 36000,
     })),
     events,
   };
