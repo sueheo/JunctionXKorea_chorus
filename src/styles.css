@@ -36,11 +36,11 @@ button {
 
 .top-run-bar {
   display: grid;
-  grid-template-columns: 198px 290px minmax(180px, 1fr) 190px 126px 120px 120px;
+  grid-template-columns: 146px 244px minmax(136px, 1fr) 116px 86px 42px 42px;
   align-items: center;
-  gap: 22px;
-  height: 78px;
-  padding: 0 28px;
+  gap: 12px;
+  height: 52px;
+  padding: 0 18px;
   border-bottom: 1px solid #e8edf4;
   background: rgba(255, 255, 255, 0.95);
 }
@@ -48,51 +48,51 @@ button {
 .brand-mark {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 26px;
+  gap: 8px;
+  font-size: 19px;
   letter-spacing: 0;
 }
 
 .brand-icon {
   position: relative;
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 29px;
+  height: 29px;
   place-items: center;
-  border: 3px solid #ffb441;
-  border-radius: 17px;
+  border: 2px solid #ffb441;
+  border-radius: 11px;
   background: #fff7e8;
   rotate: -12deg;
 }
 
 .brand-icon span {
-  width: 27px;
-  height: 27px;
+  width: 18px;
+  height: 18px;
   border-radius: 45% 45% 50% 50%;
   background: #ff8a19;
   box-shadow:
-    -9px -2px 0 -4px #ff8a19,
-    9px -2px 0 -4px #ff8a19,
-    0 7px 0 -5px #1f2937;
+    -6px -1px 0 -4px #ff8a19,
+    6px -1px 0 -4px #ff8a19,
+    0 6px 0 -5px #1f2937;
 }
 
 .brand-icon::before,
 .brand-icon::after {
   position: absolute;
-  top: 17px;
-  width: 6px;
-  height: 6px;
+  top: 12px;
+  width: 4px;
+  height: 4px;
   border-radius: 999px;
   background: #1f2937;
   content: "";
 }
 
 .brand-icon::before {
-  left: 16px;
+  left: 11px;
 }
 
 .brand-icon::after {
-  right: 16px;
+  right: 11px;
 }
 
 .project-picker,
@@ -111,21 +111,21 @@ button {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 12px;
-  min-height: 52px;
-  padding: 8px 14px;
+  gap: 8px;
+  min-height: 36px;
+  padding: 5px 10px;
   text-align: left;
   box-shadow: 0 2px 10px rgba(31, 41, 55, 0.04);
 }
 
 .project-icon {
   display: grid;
-  width: 34px;
-  height: 34px;
+  width: 24px;
+  height: 24px;
   place-items: center;
   border: 2px solid #1f2937;
-  border-radius: 8px;
-  font-size: 12px;
+  border-radius: 7px;
+  font-size: 9px;
   font-weight: 900;
 }
 
@@ -134,27 +134,31 @@ button {
 .resource-summary span,
 .agent-resource-card small {
   color: #667085;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
 }
 
 .project-picker strong {
   display: block;
-  margin-top: 2px;
-  font-size: 15px;
+  overflow: hidden;
+  margin-top: 0;
+  font-size: 12px;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .run-status {
   justify-self: center;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 11px 16px;
+  gap: 6px;
+  padding: 7px 11px;
   border: 1px solid #d8eee0;
-  border-radius: 13px;
+  border-radius: 12px;
   background: #effaf3;
   color: #13a143;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .run-status.attention {
@@ -198,8 +202,8 @@ button {
 
 .status-dot {
   display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 9px;
+  height: 9px;
   border-radius: 999px;
   background: #12ae4b;
   box-shadow: 0 0 0 5px rgba(18, 174, 75, 0.1);
@@ -208,20 +212,20 @@ button {
 .step-counter,
 .elapsed-time {
   display: grid;
-  gap: 8px;
-  padding-left: 26px;
+  gap: 4px;
+  padding-left: 12px;
   border-left: 1px solid #e4e9f1;
 }
 
 .step-counter strong {
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .progress-track {
   display: block;
   overflow: hidden;
   width: 100%;
-  height: 8px;
+  height: 5px;
   border-radius: 999px;
   background: #e6e9ee;
 }
@@ -234,16 +238,19 @@ button {
 }
 
 .elapsed-time strong {
-  font-size: 22px;
+  font-size: 16px;
+  line-height: 1;
 }
 
 .control-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 48px;
-  padding: 0 18px;
+  width: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  font-size: 13px;
   font-weight: 900;
   box-shadow: 0 2px 10px rgba(31, 41, 55, 0.04);
 }
@@ -254,10 +261,10 @@ button {
 }
 
 .control-button span {
-  width: 16px;
-  height: 22px;
-  border-right: 6px solid currentColor;
-  border-left: 6px solid currentColor;
+  width: 12px;
+  height: 16px;
+  border-right: 4px solid currentColor;
+  border-left: 4px solid currentColor;
 }
 
 .control-button.danger {
@@ -267,8 +274,8 @@ button {
 }
 
 .control-button.danger span {
-  width: 18px;
-  height: 18px;
+  width: 13px;
+  height: 13px;
   border: 0;
   border-radius: 4px;
   background: currentColor;
@@ -279,7 +286,7 @@ button {
   display: grid;
   grid-template-columns: 344px minmax(0, 1fr) 380px;
   gap: 20px;
-  height: calc(100vh - 78px);
+  height: calc(100vh - 52px);
   padding: 20px 18px 18px;
   overflow: hidden;
   transition: grid-template-columns 260ms ease;
