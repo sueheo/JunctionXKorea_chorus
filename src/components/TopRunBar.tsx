@@ -23,7 +23,7 @@ export function TopRunBar({
   summary,
 }: TopRunBarProps) {
   const shouldShowPlay = run.isPaused || run.isStopped || run.statusTone === "complete";
-  const primaryLabel = shouldShowPlay ? (run.isStopped || run.statusTone === "complete" ? "Replay 다시 재생" : "Replay 재개") : "Replay 일시정지";
+  const primaryLabel = shouldShowPlay ? "Replay 실행" : "Replay 일시정지";
   const tokenPercent = Math.min(100, (summary.totalTokens / summary.tokenLimit) * 100);
 
   return (
@@ -48,10 +48,6 @@ export function TopRunBar({
           </select>
         </span>
       </label>
-      <div className={`run-status ${run.statusTone}`}>
-        <span className="status-dot" />
-        <strong>{run.statusLabel}</strong>
-      </div>
       <div className="top-resource-summary" aria-label="전체 토큰과 예상 비용">
         <div>
           <strong>
@@ -74,7 +70,8 @@ export function TopRunBar({
         aria-label={primaryLabel}
         title={primaryLabel}
       >
-        <span aria-hidden="true" />
+        <span className="control-icon" aria-hidden="true" />
+        <span className="control-label">{shouldShowPlay ? "실행" : "일시정지"}</span>
       </button>
       <button
         className="control-button danger"
@@ -82,9 +79,10 @@ export function TopRunBar({
         onClick={onStop}
         type="button"
         aria-label="Replay 중지"
-        title="Stop"
+        title="Replay 중지"
       >
-        <span aria-hidden="true" />
+        <span className="control-icon" aria-hidden="true" />
+        <span className="control-label">정지</span>
       </button>
     </header>
   );

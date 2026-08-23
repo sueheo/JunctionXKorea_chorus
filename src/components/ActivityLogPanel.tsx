@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { RawTraceLog, RawTraceLevel, VisualizationAgent, VisualizationLog } from "../types/visualization";
+import type { RawTraceLog, VisualizationAgent, VisualizationLog } from "../types/visualization";
 
 type ActivityLogPanelProps = {
   agents: VisualizationAgent[];
@@ -11,7 +11,6 @@ type ActivityLogPanelProps = {
 };
 
 type LogFilter = "all" | "error" | "rawTrace";
-type RawLevelFilter = "all" | RawTraceLevel;
 
 const filters: Array<{ id: LogFilter; label: string }> = [
   { id: "all", label: "전체" },
@@ -27,10 +26,8 @@ const filterMatches = {
 
 export function ActivityLogPanel({ agents, isOpen, latestLogId, logs, onToggle, rawTraceLogs }: ActivityLogPanelProps) {
   const [activeFilter, setActiveFilter] = useState<LogFilter>("all");
-  const [rawLevelFilter, setRawLevelFilter] = useState<RawLevelFilter>("all");
   const agentById = useMemo(() => Object.fromEntries(agents.map((agent) => [agent.id, agent])), [agents]);
   const filteredLogs = logs.filter(filterMatches[activeFilter]);
-  const filteredRawTraceLogs = rawTraceLogs.filter((log) => rawLevelFilter === "all" || log.level === rawLevelFilter);
 
   return (
     <aside
@@ -63,7 +60,7 @@ export function ActivityLogPanel({ agents, isOpen, latestLogId, logs, onToggle, 
         ))}
       </div>
       {activeFilter === "rawTrace" ? (
-        <RawTraceList logs={filteredRawTraceLogs} onLevelChange={setRawLevelFilter} selectedLevel={rawLevelFilter} />
+        <RawTraceList logs={rawTraceLogs} />
       ) : (
         <div className="activity-log-list">
           {filteredLogs.map((log) => (
@@ -93,28 +90,11 @@ export function ActivityLogPanel({ agents, isOpen, latestLogId, logs, onToggle, 
 
 type RawTraceListProps = {
   logs: RawTraceLog[];
-  onLevelChange: (level: RawLevelFilter) => void;
-  selectedLevel: RawLevelFilter;
 };
 
-function RawTraceList({ logs, onLevelChange, selectedLevel }: RawTraceListProps) {
+function RawTraceList({ logs }: RawTraceListProps) {
   return (
     <section className="raw-trace-view" aria-label="Raw Trace">
-      <div className="raw-trace-toolbar">
-        <label>
-          <span>레벨</span>
-          <select
-            aria-label="Raw Trace 레벨 필터"
-            onChange={(event) => onLevelChange(event.target.value as RawLevelFilter)}
-            value={selectedLevel}
-          >
-            <option value="all">모든 레벨</option>
-            <option value="INFO">INFO</option>
-            <option value="ERROR">ERROR</option>
-          </select>
-        </label>
-        <strong>{logs.length}개 항목</strong>
-      </div>
       <div className="raw-trace-list">
         {logs.map((log) => (
           <article className="raw-trace-row" key={log.id}>
