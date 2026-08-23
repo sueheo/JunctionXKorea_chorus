@@ -82,6 +82,7 @@ function App() {
           latestLogId={visualization.latestLogId}
           logs={visualization.logs}
           onToggle={() => setIsActivityPanelOpen((current) => !current)}
+          rawTraceLogs={visualization.rawTraceLogs}
         />
         <button
           className="resource-drawer-opener"

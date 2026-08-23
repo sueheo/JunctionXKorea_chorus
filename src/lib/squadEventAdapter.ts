@@ -2,6 +2,7 @@ import type {
   MockReplay,
   MockReplayEvent,
   HandoffTrailNode,
+  RawTraceLog,
   VisualizationAgent,
   VisualizationLog,
   VisualizationState,
@@ -160,6 +161,7 @@ export function createVisualizationState(
     },
     agents: isStopped ? stopAgents(agents) : agents,
     logs: logs.reverse(),
+    rawTraceLogs: createRawTraceLogs(activeEvents),
     latestLogId,
     activeAgentId,
     stageMessage,
@@ -169,6 +171,35 @@ export function createVisualizationState(
     summary: createResourceSummary(agents),
     issue,
   };
+}
+
+function createRawTraceLogs(events: MockReplayEvent[]): RawTraceLog[] {
+  const seen = new Set<string>();
+  const entries: RawTraceLog[] = [];
+
+  for (const event of events) {
+    if (!event.isRawTrace || !event.rawTraceMessage) {
+      continue;
+    }
+
+    const id = `${event.rawEventType ?? event.type}-${event.rawId ?? event.id}-${event.rawTraceMessage}`;
+
+    if (seen.has(id)) {
+      continue;
+    }
+
+    seen.add(id);
+    entries.push({
+      id,
+      level: event.rawTraceLevel ?? (event.status === "error" || event.icon === "issue" ? "ERROR" : "INFO"),
+      source: event.rawTraceSource ?? event.agentId ?? "system",
+      message: event.rawTraceMessage,
+      rawEventType: event.rawEventType,
+      rawId: event.rawId,
+    });
+  }
+
+  return entries;
 }
 
 function updateAgent(agents: VisualizationAgent[], event: MockReplayEvent) {
@@ -216,6 +247,9 @@ function appendLog(
     message: event.message,
     status: event.status ?? agent.status,
     icon: event.icon ?? "music",
+    isRawTrace: event.isRawTrace,
+    rawEventType: event.rawEventType,
+    rawId: event.rawId,
   });
 }
 

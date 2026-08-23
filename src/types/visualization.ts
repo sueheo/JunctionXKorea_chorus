@@ -34,6 +34,20 @@ export type VisualizationLog = {
   message: string;
   status: AgentStatus;
   icon: "music" | "sleep" | "check" | "issue";
+  isRawTrace?: boolean;
+  rawEventType?: string;
+  rawId?: string | number;
+};
+
+export type RawTraceLevel = "INFO" | "ERROR";
+
+export type RawTraceLog = {
+  id: string;
+  level: RawTraceLevel;
+  source: string;
+  message: string;
+  rawEventType?: string;
+  rawId?: string | number;
 };
 
 export type VisualizationStep = {
@@ -94,6 +108,12 @@ export type MockReplayEvent = {
   stepId?: string;
   message?: string;
   icon?: VisualizationLog["icon"];
+  isRawTrace?: boolean;
+  rawTraceLevel?: RawTraceLevel;
+  rawTraceSource?: string;
+  rawTraceMessage?: string;
+  rawEventType?: string;
+  rawId?: string | number;
   tokenUsed?: number;
   reason?: {
     title: string;
@@ -111,6 +131,7 @@ export type VisualizationState = {
   run: RunSummary;
   agents: VisualizationAgent[];
   logs: VisualizationLog[];
+  rawTraceLogs: RawTraceLog[];
   latestLogId?: string;
   activeAgentId?: string;
   stageMessage: string;

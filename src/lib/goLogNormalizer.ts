@@ -146,6 +146,10 @@ export function normalizeGoEvents(
         const task = getTask(event.payload, taskById);
         const agentId = resolveUiAgentId(task?.agentId, rawAgentToUiAgent, task?.agentName);
         const status = mapTaskStatus(event.payload.newStatus);
+        const rawTraceMessage =
+          event.payload.newStatus === "in_progress" || event.payload.newStatus === "running"
+            ? `Task '${task?.title ?? event.payload.taskId ?? "Untitled task"}' assigned to agent '${task?.agentName ?? "agent"}'`
+            : `Task '${task?.title ?? event.payload.taskId ?? "Untitled task"}' status changed to '${event.payload.newStatus ?? "unknown"}'`;
 
         if (task?.agentId && status === "working") {
           activeTaskByRawAgent.set(task.agentId, task);
@@ -157,6 +161,8 @@ export function normalizeGoEvents(
             status,
             statusLabel: statusLabels[status],
             currentTask: task ? `${task.agentName}가 ${task.title} 작업을 진행하고 있어요` : "작업을 진행하고 있어요",
+            rawTraceSource: task?.agentId,
+            rawTraceMessage,
           }),
         );
         break;
@@ -210,6 +216,9 @@ export function normalizeGoEvents(
         const task = getTask(event.payload, taskById);
         const agentId = resolveUiAgentId(task?.agentId, rawAgentToUiAgent, task?.agentName);
         const status = event.payload.success ? "completed" : "error";
+        const rawTraceMessage = event.payload.success
+          ? `Task '${event.payload.taskTitle ?? task?.title ?? "Untitled task"}' completed by '${task?.agentName ?? "agent"}'`
+          : `Task '${event.payload.taskTitle ?? task?.title ?? "Untitled task"}' failed: ${summarizeError(event.payload.error)}`;
         normalized.push(
           createEvent(event, eventIndex, at, "agent_status_changed", {
             agentId,
@@ -218,12 +227,16 @@ export function normalizeGoEvents(
             currentTask: event.payload.success
               ? `${event.payload.taskTitle ?? task?.title ?? "작업"} 완료`
               : "다시 확인이 필요한 작업이 있어요",
+            rawTraceSource: task?.agentId,
+            rawTraceMessage,
           }),
         );
         normalized.push(
           createEvent(event, eventIndex, at, event.payload.success ? "log_added" : "issue_found", {
             agentId,
             icon: event.payload.success ? "check" : "issue",
+            rawTraceSource: task?.agentId,
+            rawTraceMessage,
             message: event.payload.success
               ? `${task?.agentName ?? "에이전트"}가 작업을 완료했어요`
               : `${task?.agentName ?? "에이전트"} 작업에서 문제가 발생했어요`,
@@ -372,14 +385,22 @@ function createEvent(
   type: NormalizedReplayEvent["type"],
   patch: Partial<NormalizedReplayEvent>,
 ): NormalizedReplayEvent {
+  const rawTraceLevel = patch.rawTraceLevel ?? resolveRawTraceLevel(rawEvent);
+  const rawTraceSource = patch.rawTraceSource ?? rawEvent.payload.agentId ?? "system";
+  const rawTraceMessage = patch.rawTraceMessage ?? summarizeRawTraceEvent(rawEvent);
+
   return {
     id: `go-${rawEvent.id}-${eventIndex}-${type}`,
     at,
     type,
     source: "go-events-jsonl",
+    ...patch,
+    isRawTrace: true,
+    rawTraceLevel,
+    rawTraceSource,
+    rawTraceMessage,
     rawEventType: rawEvent.eventType,
     rawId: rawEvent.id,
-    ...patch,
   };
 }
 
@@ -396,6 +417,43 @@ function createLog(
     message,
     icon,
   });
+}
+
+function resolveRawTraceLevel(rawEvent: GoRawEvent) {
+  return rawEvent.payload.error || rawEvent.payload.success === false || rawEvent.payload.plannerWarning
+    ? "ERROR"
+    : "INFO";
+}
+
+function summarizeRawTraceEvent(rawEvent: GoRawEvent) {
+  const payload = rawEvent.payload;
+
+  switch (rawEvent.eventType) {
+    case "squad:planning-started":
+      return `Execution started: ${payload.request ?? "No request provided"}`;
+    case "squad:plan-ready":
+      return `Plan generated: ${payload.title ?? "Untitled plan"} with ${payload.taskCount ?? 0} task(s)`;
+    case "squad:execution-started":
+      return `Execution started with ${payload.totalTasks ?? 0} task(s) across ${payload.totalWaves ?? 0} wave(s)`;
+    case "squad:task-wave-started":
+      return `Starting wave ${(payload.waveIndex ?? 0) + 1}/${payload.totalWaves ?? "?"} with ${payload.taskIds?.length ?? 0} task(s)`;
+    case "squad:agent-state-changed":
+      return `Agent '${payload.agentId ?? "unknown"}' changed state to '${payload.state ?? "unknown"}'`;
+    case "squad:workspace-file-changed":
+      return `${payload.path ?? "Unknown file"} file ${payload.changeType ?? "changed"}`;
+    case "squad:token-usage-update":
+      return `Token usage updated: ${payload.total ?? 0} tokens`;
+    case "squad:aggregation-started":
+      return "Final aggregation started";
+    case "squad:execution-completed":
+      return payload.success === false
+        ? `Execution failed: ${summarizeError(payload.error)}`
+        : "Execution completed successfully";
+    case "squad:execution-token-usage":
+      return `Execution token usage: ${payload.tokenUsage?.total ?? payload.total ?? 0} tokens`;
+    default:
+      return `${rawEvent.eventType}: ${JSON.stringify(payload)}`;
+  }
 }
 
 function summarizeError(error: string | null | undefined) {
