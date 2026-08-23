@@ -1,4 +1,5 @@
 import type { ReplayScenario, ReplayScenarioId } from "../data/replayScenarios";
+import chorusLogo from "../assets/chorus-logo.png";
 import { formatTokenCount } from "../lib/tokenModels";
 import type { ResourceSummary, RunSummary } from "../types/visualization";
 
@@ -27,11 +28,8 @@ export function TopRunBar({
 
   return (
     <header className="top-run-bar">
-      <div className="brand-mark" aria-label="RareSuSi logo">
-        <span className="brand-icon">
-          <span />
-        </span>
-        <strong>RareSuSi</strong>
+      <div className="brand-mark" aria-label="Chorus logo">
+        <img alt="Chorus" src={chorusLogo} />
       </div>
       <label className="project-picker">
         <span className="project-icon" aria-hidden="true">문제</span>

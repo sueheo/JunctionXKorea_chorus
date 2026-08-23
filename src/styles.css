@@ -36,7 +36,7 @@ button {
 
 .top-run-bar {
   display: grid;
-  grid-template-columns: 146px 244px minmax(136px, 1fr) 190px 86px 42px 42px;
+  grid-template-columns: 154px 244px minmax(136px, 1fr) 190px 86px 42px 42px;
   align-items: center;
   gap: 12px;
   height: 52px;
@@ -48,51 +48,14 @@ button {
 .brand-mark {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 19px;
-  letter-spacing: 0;
+  min-width: 0;
 }
 
-.brand-icon {
-  position: relative;
-  display: grid;
-  width: 29px;
-  height: 29px;
-  place-items: center;
-  border: 2px solid #ffb441;
-  border-radius: 11px;
-  background: #fff7e8;
-  rotate: -12deg;
-}
-
-.brand-icon span {
-  width: 18px;
-  height: 18px;
-  border-radius: 45% 45% 50% 50%;
-  background: #ff8a19;
-  box-shadow:
-    -6px -1px 0 -4px #ff8a19,
-    6px -1px 0 -4px #ff8a19,
-    0 6px 0 -5px #1f2937;
-}
-
-.brand-icon::before,
-.brand-icon::after {
-  position: absolute;
-  top: 12px;
-  width: 4px;
-  height: 4px;
-  border-radius: 999px;
-  background: #1f2937;
-  content: "";
-}
-
-.brand-icon::before {
-  left: 11px;
-}
-
-.brand-icon::after {
-  right: 11px;
+.brand-mark img {
+  display: block;
+  width: 128px;
+  height: auto;
+  object-fit: contain;
 }
 
 .project-picker {
@@ -256,6 +219,10 @@ button {
   height: 100%;
   border-radius: inherit;
   background: #14ae54;
+}
+
+.top-resource-summary .progress-track span {
+  background: #ff8327;
 }
 
 .elapsed-time strong {
