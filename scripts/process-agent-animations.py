@@ -211,6 +211,31 @@ def convert_video_with_alpha(source: Path, destination: Path, size: int, fps: in
     )
 
 
+def convert_safari_video(source: Path, destination: Path, size: int, fps: int, qscale: int) -> None:
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-loglevel",
+            "error",
+            "-i",
+            str(source),
+            "-an",
+            "-vf",
+            f"fps={fps},scale={size}:{size}:flags=lanczos,format=yuva444p10le",
+            "-c:v",
+            "prores_ks",
+            "-profile:v",
+            "4",
+            "-qscale:v",
+            str(qscale),
+            str(destination),
+        ],
+        check=True,
+    )
+
+
 def iter_sources(source_root: Path) -> list[tuple[Path, str, str]]:
     sources: list[tuple[Path, str, str]] = []
     for role_dir in sorted(source_root.iterdir()):
@@ -235,6 +260,8 @@ def main() -> int:
     parser.add_argument("--fps", default=24, type=int)
     parser.add_argument("--threshold", default=42, type=int)
     parser.add_argument("--crf", default=34, type=int)
+    parser.add_argument("--safari-dest", type=Path)
+    parser.add_argument("--safari-qscale", default=28, type=int)
     args = parser.parse_args()
 
     sources = iter_sources(args.source)
@@ -246,6 +273,10 @@ def main() -> int:
         destination = args.dest / role / f"{state}.webm"
         print(f"{source} -> {destination}")
         convert_video(source, destination, args.size, args.fps, args.threshold, args.crf)
+        if args.safari_dest and source_has_alpha(source):
+            safari_destination = args.safari_dest / role / f"{state}.mov"
+            print(f"{source} -> {safari_destination}")
+            convert_safari_video(source, safari_destination, args.size, args.fps, args.safari_qscale)
 
     return 0
 

@@ -1,76 +1,72 @@
 import type { AgentRole, AgentStatus } from "../types/visualization";
-import coderCompleted from "../assets/agent-animations/coder/completed.webm";
-import coderDefault from "../assets/agent-animations/coder/default.webm";
-import coderError from "../assets/agent-animations/coder/error.webm";
-import coderIdle from "../assets/agent-animations/coder/idle.webm";
-import coderWorking from "../assets/agent-animations/coder/working.webm";
-import criteriaCompleted from "../assets/agent-animations/criteria/completed.webm";
-import criteriaDefault from "../assets/agent-animations/criteria/default.webm";
-import criteriaError from "../assets/agent-animations/criteria/error.webm";
-import criteriaIdle from "../assets/agent-animations/criteria/idle.webm";
-import criteriaReady from "../assets/agent-animations/criteria/ready.webm";
-import criteriaWorking from "../assets/agent-animations/criteria/working.webm";
-import judgeCompleted from "../assets/agent-animations/judge/completed.webm";
-import judgeDefault from "../assets/agent-animations/judge/default.webm";
-import judgeError from "../assets/agent-animations/judge/error.webm";
-import judgeIdle from "../assets/agent-animations/judge/idle.webm";
-import judgeWorking from "../assets/agent-animations/judge/working.webm";
-import orchestratorDefault from "../assets/agent-animations/orchestrator/default.webm";
-import orchestratorError from "../assets/agent-animations/orchestrator/error.webm";
-import orchestratorIdle from "../assets/agent-animations/orchestrator/idle.webm";
-import orchestratorWorking from "../assets/agent-animations/orchestrator/working.webm";
-import reviewerCompleted from "../assets/agent-animations/reviewer/completed.webm";
-import reviewerDefault from "../assets/agent-animations/reviewer/default.webm";
-import reviewerError from "../assets/agent-animations/reviewer/error.webm";
-import reviewerIdle from "../assets/agent-animations/reviewer/idle.webm";
-import reviewerWorking from "../assets/agent-animations/reviewer/working.webm";
 
-type AnimationMap = Partial<Record<AgentRole, Partial<Record<AgentStatus | "default", string>>>>;
+export type AgentAnimationSources = {
+  mov?: string;
+  webm?: string;
+};
+
+type AnimationState = AgentStatus | "default";
+type AnimationMap = Partial<Record<AgentRole, Partial<Record<AnimationState, AgentAnimationSources>>>>;
+
+const animationUrls = import.meta.glob("../assets/agent-animations/**/*.{mov,webm}", {
+  eager: true,
+  import: "default",
+  query: "?url",
+}) as Record<string, string>;
+
+function animationSources(role: AgentRole, state: AnimationState): AgentAnimationSources {
+  const assetPath = `../assets/agent-animations/${role}/${state}`;
+
+  return {
+    mov: animationUrls[`${assetPath}.mov`],
+    webm: animationUrls[`${assetPath}.webm`],
+  };
+}
 
 const agentAnimations: AnimationMap = {
   coder: {
-    completed: coderCompleted,
-    default: coderDefault,
-    error: coderError,
-    idle: coderIdle,
-    ready: coderIdle,
-    working: coderWorking,
+    completed: animationSources("coder", "completed"),
+    default: animationSources("coder", "default"),
+    error: animationSources("coder", "error"),
+    idle: animationSources("coder", "idle"),
+    ready: animationSources("coder", "idle"),
+    working: animationSources("coder", "working"),
   },
   criteria: {
-    completed: criteriaCompleted,
-    default: criteriaDefault,
-    error: criteriaError,
-    idle: criteriaIdle,
-    ready: criteriaReady,
-    working: criteriaWorking,
+    completed: animationSources("criteria", "completed"),
+    default: animationSources("criteria", "default"),
+    error: animationSources("criteria", "error"),
+    idle: animationSources("criteria", "idle"),
+    ready: animationSources("criteria", "ready"),
+    working: animationSources("criteria", "working"),
   },
   judge: {
-    completed: judgeCompleted,
-    default: judgeDefault,
-    error: judgeError,
-    idle: judgeIdle,
-    ready: judgeIdle,
-    working: judgeWorking,
+    completed: animationSources("judge", "completed"),
+    default: animationSources("judge", "default"),
+    error: animationSources("judge", "error"),
+    idle: animationSources("judge", "idle"),
+    ready: animationSources("judge", "idle"),
+    working: animationSources("judge", "working"),
   },
   orchestrator: {
-    completed: orchestratorDefault,
-    default: orchestratorDefault,
-    error: orchestratorError,
-    idle: orchestratorIdle,
-    ready: orchestratorIdle,
-    working: orchestratorWorking,
+    completed: animationSources("orchestrator", "default"),
+    default: animationSources("orchestrator", "default"),
+    error: animationSources("orchestrator", "error"),
+    idle: animationSources("orchestrator", "idle"),
+    ready: animationSources("orchestrator", "idle"),
+    working: animationSources("orchestrator", "working"),
   },
   reviewer: {
-    completed: reviewerCompleted,
-    default: reviewerDefault,
-    error: reviewerError,
-    idle: reviewerIdle,
-    ready: reviewerIdle,
-    working: reviewerWorking,
+    completed: animationSources("reviewer", "completed"),
+    default: animationSources("reviewer", "default"),
+    error: animationSources("reviewer", "error"),
+    idle: animationSources("reviewer", "idle"),
+    ready: animationSources("reviewer", "idle"),
+    working: animationSources("reviewer", "working"),
   },
 };
 
-export function getAgentAnimationSrc(role: AgentRole, status: AgentStatus) {
+export function getAgentAnimationSources(role: AgentRole, status: AgentStatus) {
   const roleAnimations = agentAnimations[role];
 
   return roleAnimations?.[status] ?? roleAnimations?.default;

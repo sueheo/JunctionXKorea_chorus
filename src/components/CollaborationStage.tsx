@@ -1,5 +1,6 @@
 import type { VisualizationAgent } from "../types/visualization";
 import stageAsset from "../assets/stage.png";
+import { getAgentAnimationSources } from "../lib/agentAnimations";
 
 type CollaborationStageProps = {
   activeAgentId?: string;
@@ -29,9 +30,30 @@ export function CollaborationStage({ activeAgentId, agents, stageMessage }: Coll
 }
 
 function AgentCharacter({ agent, isActive }: { agent: VisualizationAgent; isActive: boolean }) {
+  const animationSources = getAgentAnimationSources(agent.role, agent.status);
+  const userAgent = navigator.userAgent;
+  const isSafari = /safari/i.test(userAgent) && !/(chrome|chromium|crios|android|edg|opr|fxios)/i.test(userAgent);
+  const animationSrc = isSafari
+    ? animationSources?.mov ?? animationSources?.webm
+    : animationSources?.webm ?? animationSources?.mov;
+
   return (
     <button className={`stage-agent ${agent.status} ${agent.role} ${isActive ? "is-active" : ""}`} type="button">
-      {agent.assetSrc ? (
+      {animationSrc ? (
+        <span className="agent-image-wrap">
+          <video
+            aria-label={`${agent.name} ${agent.statusLabel} 애니메이션`}
+            autoPlay
+            className="agent-image agent-animation"
+            key={animationSrc}
+            loop
+            muted
+            playsInline
+            preload="auto"
+            src={animationSrc}
+          />
+        </span>
+      ) : agent.assetSrc ? (
         <span className="agent-image-wrap">
           <img alt={`${agent.name} 캐릭터`} className="agent-image" src={agent.assetSrc} />
         </span>
